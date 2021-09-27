@@ -1,7 +1,8 @@
 PsychDebugWindowConfiguration
  
 %% Set up
-cd('~/src/speeded_vowel_identification/')
+PsychDebugWindowConfiguration
+cd('~/src/talker_discrimination_task/')
 addpath('task/functions')
 addpath('task/USTCRTBox_003')      
 PsychJavaTrouble(1);

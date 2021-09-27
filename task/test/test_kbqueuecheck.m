@@ -4,7 +4,8 @@ clearvars;
 PsychPortAudio('Close'); % clear audio handles
 
 %% Set up
-cd('~/src/speeded_vowel_identification/')
+PsychDebugWindowConfiguration
+cd('~/src/talker_discrimination_task/')
 addpath('task/functions')
 
 % Constants

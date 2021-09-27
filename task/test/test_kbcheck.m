@@ -1,5 +1,6 @@
 %% Set up
-cd('~/src/speeded_target_identification/')
+PsychDebugWindowConfiguration
+cd('~/src/talker_discrimination_task/')
 addpath('functions')
 addpath('stim/test_words')
 
