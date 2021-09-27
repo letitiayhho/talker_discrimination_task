@@ -9,78 +9,37 @@ cd('~/src/talker_discrimination_task/')
 addpath('task/functions')
 
 % Constants
-Fs = 44100;
-BLOCK = 0;
-stim = 'stim/f1/OO.wav';
-ptb = init_psychtoolbox(Fs);
+SUBJ_NUM = 0;
+BLOCK = 2;
+REP = 1;
+FS = 44100;
+PTB = init_psychtoolbox(FS);
 
-present_stimulus(stim, ptb)
-% 
-% %% Test current script
+% Load stim
+stim_file = ['generate_stim_order/output/', num2str(SUBJ_NUM), '_stim_order.txt'];
+STIM = readtable(stim_file);
+[stim, ~, ~] = get_rep_stim(STIM, BLOCK, REP);
+
+%%
+% present_stimulus(PTB, stim)
+
 % [aud, ~] = audioread(stim);
 % PsychPortAudio('FillBuffer', ptb.pahandle, [aud'; aud']);
 % 
-% % inter-trial interval
-% jitter = rand/5 - .1; % -100 to +100 ms uniform jitter
-% WaitSecs(.5 + jitter);
-% 
-% % start collecting response
-% KbQueueCreate(ptb.keyboard);
-% ListenChar(2);
-% KbQueueStart;
+% % show stim playing
+% DrawFormattedText(ptb.window, '-', 'center', 'center', 1);
+% Screen('Flip', ptb.window);
 % 
 % % play audio
 % t0 = GetSecs + .001;
 % PsychPortAudio('Start', ptb.pahandle, 1, t0, 1);
 % 
+% % send trigger
+% WaitSecs(.001); %length of 1 ms
+% RTBox('TTL', 255)
+% 
 % % stop audio
-% [stim_start, ~, ~, stim_end] = PsychPortAudio('Stop', ptb.pahandle, 1, 1);
-% 
-% % Collect response
-% [pressed, rt] = KbQueueCheck;
-% resp = KbName(rt);
-% [rt, I] = min(rt(rt > 0)); % keep only first response
-% resp = char(resp(I));
-% 
-% % Wait
+% PsychPortAudio('Stop', ptb.pahandle, 1, 1);
+% Screen('Flip', ptb.window);
 % WaitSecs(.2 + rand()*.2);
-% KbQueueStop;
-% KbQueueRelease;
-% ListenChar(0); % renables matlab command window
 
-%% Test final version
-% [aud, ~] = audioread(stim);
-% ptb = init_psychtoolbox(Fs);
-% [stim_start, stim_end, pressed, rt, resp] = present_stimulus(stim, BLOCK, ptb);
-% fprintf(1, resp)
-
-%% Test init_psychtoolbox()
-
-% Initialize sound with init_psychtoolbox()
-% ptb = init_psychtoolbox(Fs);
-
-% Innards of init_psychtoolbox
-% InitializePsychSound(1);
-% nrchannels = 2;
-% ptb.pahandle = PsychPortAudio('Open', [], 1, 1, Fs, nrchannels); % TUTORIAL
-
-%% Test present_stimulus()
-% Tutorial verion
-% % PsychPortAudio('FillBuffer', ptb.pahandle, [aud'; aud']);
-% % PsychPortAudio('Start', ptb.pahandle, 1, t0, 1);
-% % [actualStartTime, ~, ~, estStopTime] = PsychPortAudio('Stop', ptb.pahandle, 1, 1);
-
-% Johns version
-% [stim_start, stim_end, pressed, rt, resp] = present_stimulus(stim, BLOCK, ptb);
-% fprintf(1, resp)
-
-% Innards of Johns versionttttt
-% PsychPortAudio('FillBuffer', ptb.pahandle, [aud'; aud']);
-% t0 = GetSecs + .001;
-% starttime = PsychPortAudio('Start', ptb.pahandle, 1, t0, 1);
-% [actualStartTime, ~, ~, estStopTime] = PsychPortAudio('Stop', ptb.pahandle, 1, 1); % NEEDS 1, 1, at the end here
-
-%% End
-sca; % screen clear all
-% close all;
-% clearvars;
