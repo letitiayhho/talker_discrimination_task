@@ -39,7 +39,6 @@ for rep = 1:n_reps
     % loop through all stim in rep
 %     WaitSecs(2)
 %     fixation(PTB); % show fixation cross to start trial
-%     present_target(PTB, target) % show target
 
 %     for v = 1:length(paths)
 %         [rt, resp] = present_stimulus(paths(v), PTB); % trigger sent here
