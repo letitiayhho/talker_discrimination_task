@@ -24,6 +24,7 @@ STIM = readtable(stim_file);
 present_stimulus(PTB, stim)
 [rt, resp] = collect_response(PTB);
 correct = check_answer(same, resp);
+give_feedback(correct, PTB);
 
 %% Test multiple
 % stim = readtable('generate_stim_order/output/stim_order.txt');
