@@ -1,11 +1,10 @@
-function [vowels, paths, target, istarget] = get_filepaths(stim_order, block, rep)
+function [stim1, stim2, same] = get_rep_stim(stim_order, block, rep)
     % subset by block and rep
     stim_order = stim_order(stim_order.block == block, :);
     stim_order = stim_order(stim_order.rep == rep, :);
-    
-    % get details
-    vowels = char(stim_order.vowel);
-    paths = fullfile('stim', stim_order.talker, stim_order.vowel + ".wav");
-    target = char(unique(stim_order.vowel(logical(stim_order.istarget))));
-    istarget = stim_order.istarget;
+        
+    % get stim paths
+    stim1 = get_stim_path(stim_order.talker1, stim_order.vowel);
+    stim2 = get_stim_path(stim_order.talker2, stim_order.vowel);
+    same = stim_order.same;
 end
