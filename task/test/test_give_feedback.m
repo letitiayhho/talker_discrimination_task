@@ -18,12 +18,12 @@ PTB = init_psychtoolbox(FS);
 % Load stim
 stim_file = ['generate_stim_order/output/', num2str(SUBJ_NUM), '_stim_order.txt'];
 STIM = readtable(stim_file);
-[stim, ~, ~] = get_rep_stim(STIM, BLOCK, REP);
+[stim, ~, same] = get_rep_stim(STIM, BLOCK, REP);
 
 %% Test one
-target = 1;
-[stim_start, stim_end, pressed, rt, resp] = present_stimulus(stim, BLOCK, ptb); % trigger sent here
-correct = check_answer(target, resp);
+present_stimulus(PTB, stim)
+[rt, resp] = collect_response(PTB);
+correct = check_answer(same, resp);
 
 %% Test multiple
 % stim = readtable('generate_stim_order/output/stim_order.txt');
