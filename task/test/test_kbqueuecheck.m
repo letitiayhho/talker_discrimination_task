@@ -9,11 +9,16 @@ cd('~/src/talker_discrimination_task/')
 addpath('task/functions')
 
 % Constants
-Fs = 44100;
-stim = 'stim/f1/OO.wav';
+SUBJ_NUM = 0;
+BLOCK = 2;
+REP = 1;
+FS = 44100;
+PTB = init_psychtoolbox(FS);
 
-% Init psychtoolbox
-ptb = init_psychtoolbox(Fs);
+% Load stim
+stim_file = ['generate_stim_order/output/', num2str(SUBJ_NUM), '_stim_order.txt'];
+STIM = readtable(stim_file);
+[stim, ~, ~] = get_rep_stim(STIM, BLOCK, REP);
 
 %% Test wow so this WORKED, nothing changed, will test again... okay, it works also without KeyList
 % Saved a stable version below, will now debug with this

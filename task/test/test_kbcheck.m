@@ -1,15 +1,24 @@
+sca;
+close all;
+clearvars;
+PsychPortAudio('Close'); % clear audio handles
+
 %% Set up
 PsychDebugWindowConfiguration
 cd('~/src/talker_discrimination_task/')
-addpath('functions')
-addpath('stim/test_words')
+addpath('task/functions')
 
 % Constants
-Fs = 44100;
-stim = 'clock_f.wav';
+SUBJ_NUM = 0;
+BLOCK = 2;
+REP = 1;
+FS = 44100;
+PTB = init_psychtoolbox(FS);
 
-% Init psychtoolbox
-ptb = init_psychtoolbox(Fs);
+% Load stim
+stim_file = ['generate_stim_order/output/', num2str(SUBJ_NUM), '_stim_order.txt'];
+STIM = readtable(stim_file);
+[stim, ~, ~] = get_rep_stim(STIM, BLOCK, REP);
 
 %% Play audio
 [aud, ~] = audioread(stim);

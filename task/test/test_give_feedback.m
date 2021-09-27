@@ -9,14 +9,18 @@ cd('~/src/talker_discrimination_task/')
 addpath('task/functions')
 
 % Constants
-Fs = 44100;
-BLOCK = 0;
 SUBJ_NUM = 0;
-ptb = init_psychtoolbox(Fs);
-training = true;
+BLOCK = 2;
+REP = 1;
+FS = 44100;
+PTB = init_psychtoolbox(FS);
+
+% Load stim
+stim_file = ['generate_stim_order/output/', num2str(SUBJ_NUM), '_stim_order.txt'];
+STIM = readtable(stim_file);
+[stim, ~, ~] = get_rep_stim(STIM, BLOCK, REP);
 
 %% Test one
-stim = 'stim/f1/OO.wav';
 target = 1;
 [stim_start, stim_end, pressed, rt, resp] = present_stimulus(stim, BLOCK, ptb); % trigger sent here
 correct = check_answer(target, resp);
