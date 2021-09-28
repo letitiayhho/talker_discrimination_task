@@ -35,20 +35,19 @@ n_reps = get_n_reps(STIM, BLOCK);
 
 for rep = 1:n_reps
     [stim1, stim2, same] = get_rep_stim(STIM, BLOCK, rep);
-
-%     WaitSecs(2)
-%     fixation(PTB); % show fixation cross to start trial
-
-%         present_stimulus(PTB, stim1); % trigger sent here
-%         present_stimulus(PTB, stim2); % trigger sent here
-%         [rt, resp] = collect_response(PTB);
-%         correct = check_answer(same, resp);
-%         write_output(SUBJ_NUM, BLOCK, rep, stim1, stim2, rt, resp,
-%         correct); FIX THIS
-%         if IS_TRAINING
-%             give_feedback(correct, PTB);
-%         end
-%     end
+    
+    WaitSecs(2)
+    fixation(PTB); % show fixation cross to start trial
+    
+    present_stimulus(PTB, stim1); % trigger sent here
+    present_stimulus(PTB, stim2); % trigger sent here
+    [rt, resp] = collect_response(PTB);
+    correct = check_answer(same, resp);
+    write_output(SUBJ_NUM, BLOCK, rep, stim1, stim2, same, rt, resp,...
+        correct); FIX THIS
+    if IS_TRAINING
+        give_feedback(correct, PTB);
+    end
 end
 
 %% end block
