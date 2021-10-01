@@ -7,7 +7,7 @@ function generate_stim_order(subject_number)
     rng(subject_number)
 
     % Get talker order
-    [talker1, talker2, same] = get_talker_order();
+    [talker1, talker2, same, key] = get_talker_order();
 
     % Get vowel order
     vowel = get_vowel_order();
@@ -31,7 +31,7 @@ function generate_stim_order(subject_number)
 
     % CREATE TABLE
     stim_order = table(subject, block, rep, vowel, exemplar1, exemplar2,...
-        talker1, talker2, same);
+        talker1, talker2, same, key);
 
     % WRITE
     writetable(stim_order, ['output/', num2str(subject_number), '_stim_order.txt'])
