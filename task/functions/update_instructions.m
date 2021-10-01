@@ -10,7 +10,6 @@ function update_instructions(same_key)
 
     % Update txt file
     fileID = fopen('task/instructions/instructions_2.txt','w');
-    % fprintf(fileID,'%6s %12s\n','x','exp(x)');
     fprintf(fileID, txt);
     fclose(fileID);
 end
