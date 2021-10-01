@@ -1,4 +1,5 @@
 Welcome to the experiment.
-In this task you will be asked to identify different vowels.
+In this task you will be asked to distinguish between
+the talker of different vowels.
 
 [Press any key to continue]

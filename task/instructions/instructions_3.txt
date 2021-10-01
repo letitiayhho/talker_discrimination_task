@@ -3,7 +3,8 @@ remain as still as possible, as movements
 (even slight head movements and eye blinks)
 will interfere with the data you are providing.
 
-Each trial will begin with a fixation cross "+", 
-if you have to move at any time during the experiment
-please confine this activity to when the "+" is shown.
+If you have to move at any time during the experiment
+please confine this activity to when the fixation
+cross "+" is show.
+
 Press any key during the "+" to begin the next trial.
