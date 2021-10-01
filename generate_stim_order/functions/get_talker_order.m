@@ -14,7 +14,7 @@ while true
     talker2_order = talker2(order);
     same_order = same(order);
     key_order = key(order);
-    
+
     % Generate order
     for i = 1:20
         order = randperm(8);
