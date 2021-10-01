@@ -17,8 +17,8 @@ function generate_stim_order(subject_number)
     exemplar2 = get_exemplar_order();
 
     % Get block number
-    block_number = [1, 2, 3, 4, 5, 6];
-    block_length = [8, 48, 48, 48, 48, 48];
+    block_number = [1, 2, 3, 4, 5];
+    block_length = [8, 40, 40, 40, 40];
     block = [];
     rep = [];
     for i = 1:length(block_length)
