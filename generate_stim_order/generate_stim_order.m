@@ -10,7 +10,7 @@ function generate_stim_order(subject_number)
     [talker1, talker2, same] = get_talker_order();
 
     % Get vowel order
-    [vowel] = get_vowel_order();
+    vowel = get_vowel_order();
 
     % Get block number
     block_number = [1, 2, 3, 4, 5, 6];
