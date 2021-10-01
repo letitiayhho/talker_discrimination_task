@@ -1,4 +1,6 @@
 function [talker1_order, talker2_order, same_order, key_order] = get_talker_order()
+
+while true
     talker1 = ["A"; "B"; "B"; "A"; "X"; "Y"; "Y"; "X"];
     talker2 = ["A"; "B"; "A"; "B"; "X"; "Y"; "X"; "Y"];
     same = [1; 1; 0; 0; 1; 1; 0; 0];
@@ -27,7 +29,11 @@ function [talker1_order, talker2_order, same_order, key_order] = get_talker_orde
         window = j:j+5;
         if (sum(same_order(window)) == 0) || (sum(same_order(window)) == 5)
             % Generate talker order recursively until condition is met
-            [talker1_order, talker2_order, same_order, key_order] = get_talker_order();
+            continue
         end
+        % If condition is not met, break
+        break
     end
+    
+end
 end
