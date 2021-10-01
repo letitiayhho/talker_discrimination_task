@@ -10,7 +10,11 @@ function generate_stim_order(subject_number)
     [talker1, talker2, same] = get_talker_order();
 
     % Get vowel order
-    [vowel] = get_vowel_order();
+    vowel = get_vowel_order();
+    
+    % Get exemplar order
+    exemplar1 = get_exemplar_order();
+    exemplar2 = get_exemplar_order();
 
     % Get block number
     block_number = [1, 2, 3, 4, 5, 6];
@@ -26,7 +30,8 @@ function generate_stim_order(subject_number)
     subject = repmat(subject_number, length(block), 1);
 
     % CREATE TABLE
-    stim_order = table(subject, block, rep, vowel, talker1, talker2, same);
+    stim_order = table(subject, block, rep, vowel, exemplar1, exemplar2,...
+        talker1, talker2, same);
 
     % WRITE
     writetable(stim_order, ['output/', num2str(subject_number), '_stim_order.txt'])
