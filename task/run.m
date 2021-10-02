@@ -31,8 +31,8 @@ update_instructions(SAME_KEY)
 instructions(PTB, BLOCK);
 
 %% Task
-for rep = 1:N_TRIALS
-    [stim1, stim2, same] = get_rep_stim(STIM, BLOCK, rep);
+for trial = 1:N_TRIALS
+    [stim1, stim2, same, key] = get_rep_stim(STIM, BLOCK, trial);
     
     WaitSecs(2)
     fixation(PTB); % show fixation cross to start trial
@@ -40,9 +40,9 @@ for rep = 1:N_TRIALS
     present_stimulus(PTB, stim1); % trigger sent here
     present_stimulus(PTB, stim2); % trigger sent here
     [rt, resp] = collect_response(PTB);
-    correct = check_answer(same, resp);
-    write_output(SUBJ_NUM, BLOCK, rep, stim1, stim2, same, rt, resp,...
-        correct); FIX THIS
+    correct = check_answer(key, resp);
+    write_output(SUBJ_NUM, BLOCK, trial, stim1, stim2, same, rt, key,...
+        resp, correct);
     if IS_TRAINING
         give_feedback(correct, PTB);
     end
