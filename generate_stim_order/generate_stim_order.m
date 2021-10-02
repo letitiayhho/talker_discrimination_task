@@ -1,4 +1,4 @@
-function generate_stim_order(subject_number)
+function stim_order = generate_stim_order(subject_number, BLOCK)
     cd '/Users/letitiaho/src/talker_discrimination_task/generate_stim_order/'
     addpath('functions')
     subject_number = str2num(subject_number);
@@ -7,32 +7,27 @@ function generate_stim_order(subject_number)
     rng(subject_number)
 
     % Get talker order
-    [talker1, talker2, same, key] = get_talker_order();
+    [talker1, talker2, same, key, n_trials] = get_talker_order(BLOCK);
 
     % Get vowel order
-    vowel = get_vowel_order();
+    vowel = get_vowel_order(n_trials);
     
     % Get exemplar order
-    exemplar1 = get_exemplar_order();
-    exemplar2 = get_exemplar_order();
+    exemplar1 = get_exemplar_order(n_trials);
+    exemplar2 = get_exemplar_order(n_trials);
 
     % Get block number
-    block_number = [1, 2, 3, 4, 5];
-    block_length = [8, 40, 40, 40, 40];
-    block = [];
-    rep = [];
-    for i = 1:length(block_length)
-        block = [block; repmat(block_number(i), block_length(i), 1)];
-        rep = [rep; (1:block_length(i))'];
-    end
+    block = repmat(BLOCK, n_trials, 1);
+    rep = (1:n_trials)';
 
     % Add subject number
-    subject = repmat(subject_number, length(block), 1);
+    subject = repmat(subject_number, n_trials, 1);
 
     % CREATE TABLE
     stim_order = table(subject, block, rep, vowel, exemplar1, exemplar2,...
         talker1, talker2, same, key);
 
     % WRITE
-    writetable(stim_order, ['output/', num2str(subject_number), '_stim_order.txt'])
+%     writetable(stim_order, ['output/', num2str(subject_number),
+%     '_stim_order.txt']) % DONT WRITE, BUT USE TO TEST
 end
