@@ -14,6 +14,6 @@ function present_stimulus(ptb, stim)
     % stop audio
     PsychPortAudio('Stop', ptb.pahandle, 1, 1);
     Screen('Flip', ptb.window);
-    WaitSecs(.2 + rand()*.2);
+    WaitSecs(.5 + rand()*.2);
 
 end
