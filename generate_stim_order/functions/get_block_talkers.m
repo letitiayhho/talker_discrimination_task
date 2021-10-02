@@ -1,4 +1,4 @@
-function [talker1, talker2, same, key] = get_block_talkers(block_type)
+function [talker1, talker2, same, key, same_key] = get_block_talkers(block_type)
 if strcmp(block_type, "training")
     talker1 = ["A"; "B"; "B"; "A"; "X"; "Y"; "X"; "Y"];
     talker2 = ["A"; "B"; "A"; "B"; "X"; "Y"; "Y"; "X"];
@@ -11,13 +11,13 @@ elseif strcmp(block_type, "different")
 end
 
 same = get_same(talker1, talker2);
-key = get_key(same);
+[same_key, key] = get_key(same);
 
     function [same] = get_same(talker1, talker2)
         same = talker1 == talker2;
     end
 
-    function [key] = get_key(same)
+    function [same_key, key] = get_key(same)
         keys = ["c", "m"];
         same_key = datasample(keys, 1);
         keys(strcmp(keys, same_key)) = [];

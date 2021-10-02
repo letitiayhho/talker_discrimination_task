@@ -11,6 +11,7 @@ RTBOX = false; % logical
 %% Set up
 cd('~/src/talker_discrimination_task/')
 addpath('task/functions')
+addpath('generate_stim_order')
 % addpath('task/USTCRTBox_003')      
 % PsychJavaTrouble(1);
 
@@ -23,8 +24,7 @@ IS_TRAINING = BLOCK == 1 || BLOCK == 2; % change training depending on block num
 % PTB = init_psychtoolbox(FS);
 
 % Load stim order
-stim_file = ['generate_stim_order/output/', num2str(SUBJ_NUM), '_stim_order.txt'];
-STIM = readtable(stim_file);
+STIM = generate_stim_order(subject_number, BLOCK);
 
 %% Display instructions
 same_key = get_same_key(STIM);
