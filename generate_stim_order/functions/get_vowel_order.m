@@ -1,4 +1,4 @@
-function [vowel_order] = get_vowel_order(n_trials)
+function vowel_order = get_vowel_order(n_trials)
     possible_vowels = ["AH", "EH", "IH", "OO"];
     vowel_order = [];
     for i = 1:n_trials/length(possible_vowels)

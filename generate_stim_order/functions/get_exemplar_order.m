@@ -1,4 +1,4 @@
-function [exemplar_order] = get_exemplar_order(n_trials)
+function exemplar_order = get_exemplar_order(n_trials)
     exemplars = (1:3)';
     exemplar_order = [];
     for i = 1:round(n_trials/length(exemplars))
