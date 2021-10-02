@@ -40,8 +40,8 @@ for trial = 1:N_TRIALS
     present_stimulus(PTB, stim2); % trigger sent here
     [rt, resp] = collect_response(PTB);
     correct = check_answer(key, resp);
-    write_output(SUBJ_NUM, BLOCK, trial, stim1, stim2, same, rt, key,...
-        resp, correct);
+    write_output(SUBJ_NUM, BLOCK, block_type, trial, stim1, stim2, same,...
+        rt, key, resp, correct);
     
     if strcmp(BLOCK_TYPE, "training")
         give_feedback(correct, PTB);
