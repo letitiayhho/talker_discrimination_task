@@ -24,18 +24,14 @@ IS_TRAINING = BLOCK == 1 || BLOCK == 2; % change training depending on block num
 % PTB = init_psychtoolbox(FS);
 
 % Load stim order
-STIM = generate_stim_order(subject_number, BLOCK);
+[STIM, SAME_KEY, N_TRIALS] = generate_stim_order(subject_number, BLOCK);
 
 %% Display instructions
-same_key = get_same_key(STIM);
-update_instructions(same_key)
+update_instructions(SAME_KEY)
 instructions(PTB, BLOCK);
 
 %% Task
-% loop through all reps in block
-n_reps = get_n_reps(STIM, BLOCK);
-
-for rep = 1:n_reps
+for rep = 1:N_TRIALS
     [stim1, stim2, same] = get_rep_stim(STIM, BLOCK, rep);
     
     WaitSecs(2)
