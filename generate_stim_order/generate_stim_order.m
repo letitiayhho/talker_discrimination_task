@@ -26,8 +26,4 @@ function stim_order = generate_stim_order(subject_number, BLOCK)
     % CREATE TABLE
     stim_order = table(subject, block, rep, vowel, exemplar1, exemplar2,...
         talker1, talker2, same, key);
-
-    % WRITE
-%     writetable(stim_order, ['output/', num2str(subject_number),
-%     '_stim_order.txt']) % DONT WRITE, BUT USE TO TEST
 end
