@@ -17,14 +17,13 @@ addpath('generate_stim_order')
 
 % other constants      
 FS = 44100;
-IS_TRAINING = BLOCK == 1 || BLOCK == 2; % change training depending on block number
 
 % set up psychtoolbox and RTBox
 % init_RTBox(RTBOX);
 % PTB = init_psychtoolbox(FS);
 
 % Load stim order
-[STIM, SAME_KEY, N_TRIALS] = generate_stim_order(subject_number, BLOCK);
+[STIM, SAME_KEY, N_TRIALS, BLOCK_TYPE] = generate_stim_order(subject_number, BLOCK);
 
 %% Display instructions
 update_instructions(SAME_KEY)
@@ -43,7 +42,8 @@ for trial = 1:N_TRIALS
     correct = check_answer(key, resp);
     write_output(SUBJ_NUM, BLOCK, trial, stim1, stim2, same, rt, key,...
         resp, correct);
-    if IS_TRAINING
+    
+    if strcmp(BLOCK_TYPE, "training")
         give_feedback(correct, PTB);
     end
 end

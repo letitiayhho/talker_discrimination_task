@@ -1,4 +1,4 @@
-function [stim_order, same_key, n_trials]  = generate_stim_order(subject_number, BLOCK)
+function [stim_order, same_key, n_trials, block_type]  = generate_stim_order(subject_number, BLOCK)
     cd '/Users/letitiaho/src/talker_discrimination_task/generate_stim_order/'
     addpath('functions')
     subject_number = str2num(subject_number);
@@ -7,7 +7,7 @@ function [stim_order, same_key, n_trials]  = generate_stim_order(subject_number,
     rng(subject_number)
 
     % Get talker order
-    [talker1, talker2, same, key, n_trials, same_key] = get_talker_order(BLOCK);
+    [talker1, talker2, same, key, n_trials, same_key, block_type] = get_talker_order(BLOCK);
 
     % Get vowel order
     vowel = get_vowel_order(n_trials);
