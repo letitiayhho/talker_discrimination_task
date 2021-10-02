@@ -36,8 +36,8 @@ for trial = 1:N_TRIALS
     WaitSecs(2)
     fixation(PTB); % show fixation cross to start trial
     
-    present_stimulus(PTB, stim1); % trigger sent here
-    present_stimulus(PTB, stim2); % trigger sent here
+    present_stimulus(PTB, stim1);
+    present_stimulus(PTB, stim2);
     [rt, resp] = collect_response(PTB);
     correct = check_answer(key, resp);
     write_output(SUBJ_NUM, BLOCK, block_type, trial, stim1, stim2, same,...

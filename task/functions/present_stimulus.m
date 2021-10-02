@@ -10,10 +10,6 @@ function present_stimulus(ptb, stim)
     % play audio
     t0 = GetSecs + .001;
     PsychPortAudio('Start', ptb.pahandle, 1, t0, 1);
-    
-    % send trigger
-    WaitSecs(.001); %length of 1 ms        
-%     RTBox('TTL', 255) CHANGE
 
     % stop audio
     PsychPortAudio('Stop', ptb.pahandle, 1, 1);
