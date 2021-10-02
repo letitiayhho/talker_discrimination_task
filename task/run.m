@@ -27,7 +27,9 @@ stim_file = ['generate_stim_order/output/', num2str(SUBJ_NUM), '_stim_order.txt'
 STIM = readtable(stim_file);
 
 %% Display instructions
-% instructions(PTB, BLOCK);
+same_key = get_same_key(STIM);
+update_instructions(same_key)
+instructions(PTB, BLOCK);
 
 %% Task
 % loop through all reps in block
