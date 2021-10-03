@@ -1,7 +1,5 @@
 function [stim_order, same_key, n_trials, block_type]  = generate_stim_order(subject_number, BLOCK)
-    cd '/Users/letitiaho/src/talker_discrimination_task/generate_stim_order/'
-    addpath('functions')
-    subject_number = str2num(subject_number);
+    addpath('generate_stim_order/functions')
 
     % SET SEED
     rng(subject_number)

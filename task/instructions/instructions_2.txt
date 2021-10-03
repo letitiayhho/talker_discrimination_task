@@ -2,9 +2,10 @@ In each trial, you will be asked to identify whether
 pairs of vowels are spoken by the same talker.
 A fixation cross "+" will appear to indicate the start
 of each trial. After the fixation cross, two vowels will 
-be played to you. Once the vowels are presented, an "x"
-will appear, indicating when you should enter your 
-response. If you think the vowels were spoken by the same
-talker, press the "c" key, if they were spoken by
-different talkers, press the "m" key.
+be played to you. 
+If you think the vowels were spoken by the same
+talker, press the "m" key, if they were spoken by
+different talkers, press the "c" key.
+An "x" will appear after the vowels are played to 
+indicate when you should enter your response.
 Try to respond as quickly and accurately as possible.

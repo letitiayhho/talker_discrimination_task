@@ -2,10 +2,11 @@ In each trial, you will be asked to identify whether
 pairs of vowels are spoken by the same talker.
 A fixation cross "+" will appear to indicate the start
 of each trial. After the fixation cross, two vowels will 
-be played to you. Once the vowels are presented, an "x"
-will appear, indicating when you should enter your 
-response. If you think the vowels were spoken by the same
+be played to you. 
+If you think the vowels were spoken by the same
 talker, press the "<same>" key, if they were spoken by
 different talkers, press the "<different>" key.
+An "x" will appear after the vowels are played to 
+indicate when you should enter your response.
 Try to respond as quickly and accurately as possible.
 

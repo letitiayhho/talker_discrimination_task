@@ -20,10 +20,10 @@ FS = 44100;
 PTB = init_psychtoolbox(FS);
 
 % Load stim order
-[STIM, SAME_KEY, N_TRIALS, BLOCK_TYPE] = generate_stim_order(subject_number, BLOCK);
+[STIM, SAME_KEY, N_TRIALS, BLOCK_TYPE] = generate_stim_order(SUBJ_NUM, BLOCK);
 
 %% Display instructions
-update_instructions(SAME_KEY)
+update_instructions(SAME_KEY)  
 instructions(PTB, BLOCK);
 
 %% Task
