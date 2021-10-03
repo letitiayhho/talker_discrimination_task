@@ -5,7 +5,7 @@ function [rt, resp] = collect_response(ptb)
     Screen('Flip', ptb.window);
     
     % start collecting response
-    ListenChar(2); % disable matlab command window
+%     ListenChar(2); % disable matlab command window
     KbQueueCreate(ptb.keyboard);
     KbQueueStart;
     resp_start = GetSecs;
