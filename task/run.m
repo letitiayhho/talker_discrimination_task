@@ -1,7 +1,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%% UPDATE THIS SECTION BEFORE EACH SUBJECT/TEST
 
 SUBJ_NUM = 0; % numeric
-BLOCK = 2; % numeric
+BLOCK = 3; % numeric
 
 %%%%%%%%%%%%%%%%%%%%%%%
       
