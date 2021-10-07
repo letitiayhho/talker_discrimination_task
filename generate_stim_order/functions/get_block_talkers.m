@@ -1,4 +1,4 @@
-function [talker1, talker2, same, key, same_key] = get_block_talkers(block_type, same_key)
+kfunction [talker1, talker2, same, key, same_key] = get_block_talkers(block_type, same_key)
 if strcmp(block_type, "training")
     talker1 = ["A"; "B"; "B"; "A"; "X"; "Y"; "X"; "Y"];
     talker2 = ["A"; "B"; "A"; "B"; "X"; "Y"; "Y"; "X"];
