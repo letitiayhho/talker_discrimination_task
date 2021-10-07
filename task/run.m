@@ -23,7 +23,7 @@ PTB = init_psychtoolbox(FS);
 [STIM, SAME_KEY, N_TRIALS, BLOCK_TYPE] = generate_stim_order(SUBJ_NUM, BLOCK);
 
 %% Display instructions
-update_instructions(SAME_KEY)  
+update_instructions(BLOCK, SAME_KEY)  
 instructions(PTB, BLOCK);
 
 %% Task

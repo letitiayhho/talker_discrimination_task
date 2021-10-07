@@ -1,5 +1,7 @@
-This is an experiment block. There will be four total 
-experiment blocks. No feedback will be given for your 
-answers. Please try your best to stay still and relaxed. 
-
+Welcome to experiment block #1. There will be four total 
+experiment blocks. As before, please press the "m"
+key if the vowels were spoken by the same talker and the
+"c" key otherwise. Please try to respond as quickly
+and accurately as you can. No feedback will be given for
+for your answers.
 Good luck!
