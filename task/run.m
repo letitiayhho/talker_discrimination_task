@@ -1,7 +1,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%% UPDATE THIS SECTION BEFORE EACH SUBJECT/TEST
 
 SUBJ_NUM = 0; % numeric
-BLOCK = 3; % numeric
+BLOCK = 2; % numeric
 
 %%%%%%%%%%%%%%%%%%%%%%%
       
@@ -28,7 +28,7 @@ instructions(PTB, BLOCK);
 
 %% Task
 for trial = 1:N_TRIALS
-    [stim1, stim2, same, key] = get_rep_stim(STIM, BLOCK, trial);
+    [stim1, stim2, same, key] = get_trial_stim(STIM, BLOCK, trial);
     
     WaitSecs(2)
     fixation(PTB); % show fixation cross to start trial
