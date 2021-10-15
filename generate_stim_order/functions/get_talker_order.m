@@ -25,15 +25,15 @@ while true
 end
 end
 
-function [cont] = check_repeats(same_order)
+function break_loop = check_repeats(same_order)
     for j = 1:length(same_order)-5
         window = j:j+5;
         if (sum(same_order(window)) == 0) || (sum(same_order(window)) == 5)
             % Generate talker order recursively until condition is met
-            cont = false;
+            break_loop = false;
             return
         end
     end
-    cont = true;
+    break_loop = true;
     return
 end
