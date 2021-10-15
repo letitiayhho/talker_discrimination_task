@@ -1,7 +1,7 @@
 function [talker1_order, talker2_order, same_order, key_order, n_trials, same_key, block_type] = get_talker_order(BLOCK, same_key)
 
 [block_type, n_trials] = get_block_type(BLOCK); 
-[talker1, talker2, same, key, same_key] = get_block_talkers(block_type, same_key);
+[talker1, talker2, same, key] = get_block_talkers(block_type, same_key);
 
 while true
     talker1_order = [];
