@@ -1,4 +1,4 @@
-function [stim_order, same_key, n_trials, block_type]  = generate_stim_order(subject_number, block)
+    function [stim_order, same_key, n_trials, block_type]  = generate_stim_order(subject_number, block)
     addpath('generate_stim_order/functions')
 
     % SET SEED
@@ -15,7 +15,7 @@ function [stim_order, same_key, n_trials, block_type]  = generate_stim_order(sub
     [talker1, talker2, same, key, n_trials, same_key, block_type] = get_talker_order(block, same_key);
 
     % Get vowel order
-    [vowel1, vowel2] = get_vowel_order(n_trials);
+    [vowel1, vowel2] = get_vowel_order(block, n_trials);
     
     % Get exemplar order
     exemplar1 = get_exemplar_order(n_trials);
