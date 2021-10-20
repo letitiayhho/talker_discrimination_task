@@ -35,39 +35,19 @@ function [vowel1, vowel2] = get_vowel_order(block)
             vowel_order = vowel_order(randperm(length(vowel_order)), :);
         end
         
+        vowel1 = vowel_order(:, 1);
+        vowel2 = vowel_order(:, 2);
+        
         % Check that for 3 pairs a vowel doesn't appear more than 4 times
-        if check_repeats(vowel_order)
+        if check_repeat_pairs(vowel_order) &&...
+                check_repeat_places(vowel1) &&...
+                check_repeat_places(vowel2)
             break
         end
-%         flattened_order = flatten(vowel_order);
-%         if check_repeats(flattened_order)
-%             break
-%         end
     end
 
-    vowel1 = vowel_order(:, 1);
-    vowel2 = vowel_order(:, 2);
-end
 
-function flattened_seq = flatten(seq)
-    flattened_seq = [];
-    for i = 1:length(seq)
-        flattened_seq = [flattened_seq; seq(i, :)'];
-    end
 end
-
-% function break_loop = check_repeats(seq)
-%     for j = 1:length(seq)-8
-%         window = j:j+8;
-%         counts = groupcounts(seq(window));
-%         % Make sure that out of 9 doesn't appear more than 4 times
-%         if sum(counts > 5) > 0
-%             break_loop = false;
-%             return
-%         end
-%     end
-%     break_loop = true;
-% end
 
 function break_loop = check_repeat_pairs(seq)
     for i = 1:length(seq)-1
@@ -81,7 +61,6 @@ function break_loop = check_repeat_pairs(seq)
     break_loop = true;
 end
 
-
 function break_loop = check_repeat_places(seq)
     for i = 1:length(seq)-3
         window = i:i+3;
@@ -90,6 +69,6 @@ function break_loop = check_repeat_places(seq)
             break_loop = false;
             return
         end
-        break_loop = true;
     end
+    break_loop = true;
 end
