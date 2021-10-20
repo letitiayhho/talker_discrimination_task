@@ -14,12 +14,11 @@ function [vowel1, vowel2] = get_vowel_order(block)
         end
         
         if block == 1 % if training
-            % get 6 mismatched pairs for training trials
-            vowel_order = datasample(vowel_order, 6, 'Replace', false);
+            % get 8 mismatched pairs for training trials
+            vowel_order = datasample(vowel_order, 8, 'Replace', false);
             
-            % get 6 matched pairs
-            vowel_order = [vowel_order; repmat(possible_vowels, 2)'];
-            vowel_order = [vowel_order; datasample(repmat(possible_vowels, 2, 1)', 2)];
+            % get 8 matched pairs
+            vowel_order = [vowel_order; repmat(possible_vowels, 2, 2)'];
 
             % randomize the order
             vowel_order = vowel_order(randperm(length(vowel_order)), :);

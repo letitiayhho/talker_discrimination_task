@@ -1,28 +1,28 @@
 function [talker1_order, talker2_order, same_order, key_order, n_trials, same_key, block_type] = get_talker_order(BLOCK, same_key)
 
-[block_type, n_trials] = get_block_type(BLOCK); 
-[talker1, talker2, same, key] = get_block_talkers(block_type, same_key);
+    [block_type, n_trials] = get_block_type(BLOCK); 
+    [talker1, talker2, same, key] = get_block_talkers(block_type, same_key);
 
-while true
-    talker1_order = [];
-    talker2_order = [];
-    same_order = [];
-    key_order = [];
+    while true
+        talker1_order = [];
+        talker2_order = [];
+        same_order = [];
+        key_order = [];
 
-    % Generate order
-    for i = 1:n_trials/length(talker1)
-        order = randperm(length(talker1));
-        talker1_order = [talker1_order; talker1(order)];
-        talker2_order = [talker2_order; talker2(order)];
-        same_order = [same_order; same(order)];
-        key_order = [key_order; key(order)];
+        % Generate order
+        for i = 1:n_trials/length(talker1)
+            order = randperm(length(talker1));
+            talker1_order = [talker1_order; talker1(order)];
+            talker2_order = [talker2_order; talker2(order)];
+            same_order = [same_order; same(order)];
+            key_order = [key_order; key(order)];
+        end
+
+        % Make sure there aren't more than 4 same or different trials in a row
+        if check_repeats(same_order)
+            break
+        end
     end
-    
-    % Make sure there aren't more than 4 same or different trials in a row
-    if check_repeats(same_order)
-        break
-    end
-end
 end
 
 function break_loop = check_repeats(same_order)
