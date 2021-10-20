@@ -10,7 +10,7 @@ while true
     key_order = [];
 
     % Generate order
-    for i = 1:round(n_trials/length(talker1))
+    for i = 1:n_trials/length(talker1)
         order = randperm(length(talker1));
         talker1_order = [talker1_order; talker1(order)];
         talker2_order = [talker2_order; talker2(order)];
