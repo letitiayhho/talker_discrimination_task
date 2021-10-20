@@ -12,8 +12,13 @@ function [rt, resp] = collect_response(ptb)
 
     % wait for response
     pressed = 0;
+    times_up = 0;
     while ~pressed
         [pressed, rt] = KbQueueCheck(); %check response
+        times_up = GetSecs - resp_start > 2;
+        if times_up
+            break
+        end
     end
     
     % save key identity and rt

@@ -34,7 +34,7 @@ for trial = 1:N_TRIALS
     fixation(PTB); % show fixation cross to start trial
     
     present_stimulus(PTB, stim1);
-    WaitSecs(.1 + rand()*.05);
+    WaitSecs(.25)
     present_stimulus(PTB, stim2);
     [rt, resp] = collect_response(PTB);
     correct = check_answer(key, resp);
