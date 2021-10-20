@@ -1,4 +1,4 @@
-    function [stim_order, same_key, n_trials, block_type]  = generate_stim_order(subject_number, block)
+function [stim_order, same_key, n_trials, block_type]  = generate_stim_order(subject_number, block)
     addpath('generate_stim_order/functions')
 
     % SET SEED
