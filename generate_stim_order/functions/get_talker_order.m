@@ -35,5 +35,4 @@ function break_loop = check_repeats(same_order)
         end
     end
     break_loop = true;
-    return
 end

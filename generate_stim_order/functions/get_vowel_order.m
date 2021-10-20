@@ -1,44 +1,95 @@
-function [vowel1, vowel2] = get_vowel_order(block, n_trials)
+function [vowel1, vowel2] = get_vowel_order(block)
     possible_vowels = ["AA", "EH", "IH", "OO"];
 
     while true
-        % Come up with a random vowel order
+        % create all the mismatched pairs
         vowel_order = [];
-        for i = 1:n_trials
-            vowel_order = [vowel_order; datasample(possible_vowels, 2, 'Replace', false)];
+        for i = possible_vowels
+            for j = possible_vowels
+                if i == j
+                    continue
+                end
+                vowel_order = [vowel_order; i, j];
+            end
         end
-        vowel1 = vowel_order(:, 1);
-        vowel2 = vowel_order(:, 2);
         
-        % Make sure count of each vowel is min 1 max 2 for training blocks
-        if block == 1 &&...
-            check_counts(vowel1, 1, 3) &&...
-            check_counts(vowel2, 1, 3)
-            return
-        end
-    
-        % Make sure count of each vowel is min 8 max 12 for test blocks
-        if block ~= 1 &&...
-            check_counts(vowel1, 8, 12) &&...
-            check_counts(vowel2, 8, 12)
-            return
-        end  
-    end
-    
-    function break_loop = check_counts(seq, min, max)        
-        counts = groupcounts(seq);
-        
-        % Make sure there is one sample of each vowel
-        if length(counts) < 4
-            break_loop = false;
-            return
-        end
+        if block == 1 % if training
+            % get 6 mismatched pairs for training trials
+            vowel_order = datasample(vowel_order, 6, 'Replace', false);
+            
+            % get 6 matched pairs
+            vowel_order = [vowel_order; repmat(possible_vowels, 2)'];
+            vowel_order = [vowel_order; datasample(repmat(possible_vowels, 2, 1)', 2)];
 
-        % Make sure each vowel appears at least a certain number of times
-        if sum(counts < min) == 0 || sum(counts > max) == 0
-            break_loop = true;
+            % randomize the order
+            vowel_order = vowel_order(randperm(length(vowel_order)), :);
+            
         else
-            break_loop = false;
+            % double number of mismatched pairs to get 24
+            vowel_order = [vowel_order; vowel_order]; 
+            
+            % add 24 matched pairs
+            vowel_order = [vowel_order; repmat(possible_vowels, 2, 6)'];
+        
+            % randomize the order
+            vowel_order = vowel_order(randperm(length(vowel_order)), :);
         end
+        
+        % Check that for 3 pairs a vowel doesn't appear more than 4 times
+        if check_repeats(vowel_order)
+            break
+        end
+%         flattened_order = flatten(vowel_order);
+%         if check_repeats(flattened_order)
+%             break
+%         end
+    end
+
+    vowel1 = vowel_order(:, 1);
+    vowel2 = vowel_order(:, 2);
+end
+
+function flattened_seq = flatten(seq)
+    flattened_seq = [];
+    for i = 1:length(seq)
+        flattened_seq = [flattened_seq; seq(i, :)'];
+    end
+end
+
+% function break_loop = check_repeats(seq)
+%     for j = 1:length(seq)-8
+%         window = j:j+8;
+%         counts = groupcounts(seq(window));
+%         % Make sure that out of 9 doesn't appear more than 4 times
+%         if sum(counts > 5) > 0
+%             break_loop = false;
+%             return
+%         end
+%     end
+%     break_loop = true;
+% end
+
+function break_loop = check_repeat_pairs(seq)
+    for i = 1:length(seq)-1
+        row = seq(i, :);
+        next_row = seq(i+1, :);
+        if row == next_row
+            break_loop = false;
+            return
+        end
+    end
+    break_loop = true;
+end
+
+
+function break_loop = check_repeat_places(seq)
+    for i = 1:length(seq)-3
+        window = i:i+3;
+        counts = groupcounts(seq(window));
+        if sum(counts == 4) > 0
+            break_loop = false;
+            return
+        end
+        break_loop = true;
     end
 end

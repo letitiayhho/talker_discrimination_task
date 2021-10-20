@@ -15,7 +15,7 @@
     [talker1, talker2, same, key, n_trials, same_key, block_type] = get_talker_order(block, same_key);
 
     % Get vowel order
-    [vowel1, vowel2] = get_vowel_order(block, n_trials);
+    [vowel1, vowel2] = get_vowel_order(block);
     
     % Get exemplar order
     exemplar1 = get_exemplar_order(n_trials);
