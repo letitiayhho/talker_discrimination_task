@@ -1,4 +1,4 @@
-Welcome to experiment block #1. There will be four total 
+Welcome to experiment block #0. There will be four total 
 experiment blocks. As before, please press the "m"
 key if the vowels were spoken by the same talker and the
 "c" key otherwise. Please try to respond as quickly
