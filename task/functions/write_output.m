@@ -4,7 +4,8 @@ function write_output(subject, block, stim, rt, resp, correct)
     fpath = ['task/output/subj' num2str(subject) 'block' num2str(block) '.csv'];
 
     % create data frame
-    row = [stim, table(rt), table(resp), table(correct)];
+    resp = string(resp);
+    row = [stim, table(rt, string(resp), correct)];
     row = strjoin(table2array(row), ',');
     row = strcat('\n', row);
 
