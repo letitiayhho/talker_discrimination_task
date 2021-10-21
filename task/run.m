@@ -3,7 +3,7 @@
 SUBJ_NUM = 0; % numeric
 BLOCK = 1; % numeric
 
-%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%
       
 PsychDebugWindowConfiguration
 
@@ -24,7 +24,7 @@ PTB = init_psychtoolbox(FS);
 
 %% Display instructions
 update_instructions(BLOCK, SAME_KEY)  
-instructions(PTB, BLOCK);
+% instructions(PTB, BLOCK);
 
 %% Task
 for trial = 1:N_TRIALS
