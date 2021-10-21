@@ -5,7 +5,7 @@ function write_output(subject, block, stim, rt, resp, correct)
 
     % create data frame
     resp = string(resp);
-    row = [stim, table(rt, string(resp), correct)];
+    row = [stim, table(rt, resp, correct)];
     row = strjoin(table2array(row), ',');
     row = strcat('\n', row);
 
