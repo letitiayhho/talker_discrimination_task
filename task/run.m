@@ -20,7 +20,7 @@ FS = 44100;
 PTB = init_psychtoolbox(FS);
 
 % Load stim order
-[STIM, SAME_KEY, N_TRIALS, BLOCK_TYPE] = generate_stim_order(SUBJ_NUM, BLOCK);
+[STIM, SAME_KEY, N_TRIALS] = generate_stim_order(SUBJ_NUM, BLOCK);
 
 %% Display instructions
 update_instructions(BLOCK, SAME_KEY)  
@@ -40,7 +40,7 @@ for trial = 1:N_TRIALS
     correct = check_answer(key, resp);
     write_output(SUBJ_NUM, BLOCK, STIM(trial,:), rt, resp, correct)
     
-    if strcmp(BLOCK_TYPE, "training")
+    if BLOCK == 1
         give_feedback(correct, PTB);
     end
 end

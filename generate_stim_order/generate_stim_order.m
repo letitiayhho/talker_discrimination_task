@@ -1,4 +1,4 @@
-function [stim_order, same_key, n_trials, block_type]  = generate_stim_order(subject_number, block)
+function [stim_order, same_key, n_trials]  = generate_stim_order(subject_number, block)
     addpath('generate_stim_order/functions')
 
     % SET SEED
@@ -23,12 +23,13 @@ function [stim_order, same_key, n_trials, block_type]  = generate_stim_order(sub
 
     % Get block number
     block = repmat(block, n_trials, 1);
+    block_type = repmat(block_type, n_trials, 1);
     rep = (1:n_trials)';
 
     % Add subject number
     subject = repmat(subject_number, n_trials, 1);
 
     % CREATE TABLE
-    stim_order = table(subject, block, rep, vowel1, vowel2, exemplar1,...
-        exemplar2, talker1, talker2, same, key);
+    stim_order = table(subject, block, block_type, rep, vowel1, vowel2,...
+        exemplar1, exemplar2, talker1, talker2, same, key);
 end
