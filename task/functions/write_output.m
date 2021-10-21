@@ -1,19 +1,16 @@
-function write_output(subject, block, block_type, trial, stim1, stim2,...
-    same, rt, key, resp, correct)
+function write_output(subject, block, stim, rt, resp, correct)
 
     % get output filename for this subject and black
     fpath = ['task/output/subj' num2str(subject) 'block' num2str(block) '.csv'];
-    
+
     % create data frame
-    row = {num2str(subject), num2str(block), char(block_type), num2str(trial),...
-        char(stim1), char(stim2), num2str(same), num2str(rt), key,...
-        resp, num2str(correct)};
-    row = strjoin(row, ',');
-    row = ['\n' row];
-    
+    row = [stim, table(rt), table(resp), table(correct)];
+    row = strjoin(table2array(row), ',');
+    row = strcat('\n', row);
+
     if ~(exist(fpath, 'file') == 2) % ~isfile(fpath) in later versions
-        cols = 'subject,block,block_type,trial,stim1,stim2,same,rt,key,resp,correct';
-        row = [cols row];
+        cols = strjoin([stim.Properties.VariableNames, 'rt,resp,correct'], ',');
+        row = strcat(cols, row); 
         f = fopen(fpath, 'wt'); 
         fprintf(f, row);
         fclose(f);

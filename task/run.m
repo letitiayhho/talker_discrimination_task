@@ -1,7 +1,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%% UPDATE THIS SECTION BEFORE EACH SUBJECT/TEST
 
 SUBJ_NUM = 0; % numeric
-BLOCK = 2; % numeric
+BLOCK = 1; % numeric
 
 %%%%%%%%%%%%%%%%%%%%%%%
       
@@ -28,7 +28,7 @@ instructions(PTB, BLOCK);
 
 %% Task
 for trial = 1:N_TRIALS
-    [stim1, stim2, same, key] = get_trial_stim(STIM, BLOCK, trial);
+    [stim1, stim2, same, key] = get_trial_stim(STIM, BLOCK, trial); %DO I HAVE TO PASS IN BLOCK??????
     
     WaitSecs(2)
     fixation(PTB); % show fixation cross to start trial
@@ -38,8 +38,9 @@ for trial = 1:N_TRIALS
     present_stimulus(PTB, stim2);
     [rt, resp] = collect_response(PTB);
     correct = check_answer(key, resp);
-    write_output(SUBJ_NUM, BLOCK, BLOCK_TYPE, trial, stim1, stim2, same,...
-        rt, key, resp, correct);
+    write_output(SUBJ_NUM, BLOCK, STIM(trial,:), rt, resp, correct)
+%     write_output(SUBJ_NUM, BLOCK, BLOCK_TYPE, trial, stim1, stim2, same,...
+%         rt, key, resp, correct);
     
     if strcmp(BLOCK_TYPE, "training")
         give_feedback(correct, PTB);
