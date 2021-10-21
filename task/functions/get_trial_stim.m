@@ -1,6 +1,5 @@
-function [stim1, stim2, same, key] = get_trial_stim(stim_order, block, rep)
+function [stim1, stim2, same, key] = get_trial_stim(stim_order, rep)
     % subset by block and rep
-    stim_order = stim_order(stim_order.block == block, :);
     stim_order = stim_order(stim_order.rep == rep, :);
         
     % get stim paths

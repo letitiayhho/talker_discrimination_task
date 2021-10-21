@@ -28,7 +28,7 @@ instructions(PTB, BLOCK);
 
 %% Task
 for trial = 1:N_TRIALS
-    [stim1, stim2, same, key] = get_trial_stim(STIM, BLOCK, trial); %DO I HAVE TO PASS IN BLOCK??????
+    [stim1, stim2, same, key] = get_trial_stim(STIM, trial);
     
     WaitSecs(2)
     fixation(PTB); % show fixation cross to start trial
@@ -39,8 +39,6 @@ for trial = 1:N_TRIALS
     [rt, resp] = collect_response(PTB);
     correct = check_answer(key, resp);
     write_output(SUBJ_NUM, BLOCK, STIM(trial,:), rt, resp, correct)
-%     write_output(SUBJ_NUM, BLOCK, BLOCK_TYPE, trial, stim1, stim2, same,...
-%         rt, key, resp, correct);
     
     if strcmp(BLOCK_TYPE, "training")
         give_feedback(correct, PTB);
