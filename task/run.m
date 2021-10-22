@@ -8,19 +8,21 @@ test = false; % logical
 
 %% Set up
 cd('~/src/talker_discrimination_task/')
-addpath('task/functions')
 addpath('generate_stim_order')
+addpath('task/functions')
+addpath('task/USTCRTBox_003')  
 PsychJavaTrouble(1);
 
 % run with psychtoolbox debugger if testing
 if test
     PsychDebugWindowConfiguration
+    RTBOX = false
 end
 
 % set up psychtoolbox and RTBox
-init_RTBox(RTBOX);
 FS = 44100;
 PTB = init_psychtoolbox(FS);
+init_RTBox(RTBOX);
 
 % Load stim order
 [STIM, SAME_KEY, N_TRIALS] = generate_stim_order(SUBJ_NUM, BLOCK);

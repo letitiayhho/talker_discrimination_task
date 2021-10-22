@@ -1,39 +1,33 @@
 function [rt, resp] = collect_response(ptb)
 
-    % show response accepting
-    DrawFormattedText(ptb.window, 'x', 'center', 'center', 1);
-    Screen('Flip', ptb.window);
-    
     % start collecting response
     ListenChar(2); % disable matlab command window
-    KbQueueCreate(ptb.keyboard);
-    KbQueueStart;
-    resp_start = GetSecs;
+    RTBox('clear');
+    Priority(1);
+
+    % show response accepting
+    DrawFormattedText(ptb.window, 'x', 'center', 'center', 1);
+    resp_start = Screen('Flip', ptb.window);
 
     % wait for response
-    pressed = 0;
-    times_up = 0;
-    while ~pressed
-        [pressed, rt] = KbQueueCheck(); %check response
-        times_up = GetSecs - resp_start > 1.5;
-        if times_up
-            break
-        end
-    end
+    timeout = 1.5;
+    [rt, resp] = RTBox(timeout);
     
-    % save key identity and rt
-    if sum(rt) > 0
-        keylist = KbName(rt);
-        [rt, I] = min(rt(rt > 0)); % keep only first response
-        resp = char(keylist(I));
-        rt = rt - resp_start;
-    else
-        resp = "NaN";
-        rt = "NaN";
+    % check response
+    if isempty(rt) % no response
+        rt = nan;
+        resp = nan;
+    end 
+    rt = rt - resp_start; %  response time
+    if numel(rt) > 1 % more than 1 response
+        ind = find(rt>0,1); % use 1st proper rt
+        rt = rt(ind);
+        resp = resp{ind};
     end
 
     % end of accepting response
     Screen('Flip', ptb.window);
     ListenChar(0); % renables matlab command window
+    Priority(0);
 
 end
