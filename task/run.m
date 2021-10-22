@@ -2,10 +2,9 @@
 
 SUBJ_NUM = 0; % numeric
 BLOCK = 1; % numeric
+test = false; % logical
 
 %%%%%%%%%%%%%%%%%%%%%%%%%
-      
-PsychDebugWindowConfiguration
 
 %% Set up
 cd('~/src/talker_discrimination_task/')
@@ -13,10 +12,14 @@ addpath('task/functions')
 addpath('generate_stim_order')
 PsychJavaTrouble(1);
 
-% other constants      
-FS = 44100;
+% run with psychtoolbox debugger if testing
+if test
+    PsychDebugWindowConfiguration
+end
 
 % set up psychtoolbox and RTBox
+init_RTBox(RTBOX);
+FS = 44100;
 PTB = init_psychtoolbox(FS);
 
 % Load stim order
