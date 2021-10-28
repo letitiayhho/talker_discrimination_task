@@ -2,21 +2,22 @@
 
 SUBJ_NUM = 0; % numeric
 BLOCK = 1; % numeric
-test = true; % logical
+TEST = true; % logical
 
 %%%%%%%%%%%%%%%%%%%%%%%%%
 
 %% Set up
-cd('~/src/talker_discrimination_task/')
+cd('C:\Users\Nusbaum Lab\Desktop\talker_discrimination_task')
 addpath('generate_stim_order')
 addpath('task/functions')
 addpath('task/USTCRTBox_003')  
 PsychJavaTrouble(1);
 
 % run with psychtoolbox debugger if testing
-if test
-    PsychDebugWindowConfiguration
+if TEST
     RTBOX = false;
+else
+    RTBOX = true;
 end
 
 % set up psychtoolbox and RTBox
@@ -29,7 +30,7 @@ init_RTBox(RTBOX);
 
 %% Display instructions
 update_instructions(BLOCK, SAME_KEY)  
-% instructions(PTB, BLOCK);
+instructions(PTB, BLOCK);
 
 %% Task
 for trial = 1:N_TRIALS
