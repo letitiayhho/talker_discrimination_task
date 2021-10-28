@@ -18,7 +18,7 @@ key = get_key(same, same_key);
     end
 
     function [key] = get_key(same, same_key)
-        keys = ['1', '4'];
+        keys = ["1", "4"];
         keys(strcmp(keys, same_key)) = [];
         different_key = keys;
         
