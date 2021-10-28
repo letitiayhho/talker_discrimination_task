@@ -1,6 +1,6 @@
 function update_instructions(block, same_key)
     % Identify the key for different pairs
-    keys = ['c', 'm'];
+    keys = ["1", "4"];
     different_key = keys(keys ~= same_key);
     block = num2str(block-1);
 
