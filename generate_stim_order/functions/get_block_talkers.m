@@ -19,8 +19,7 @@ key = get_key(same, same_key);
 
     function [key] = get_key(same, same_key)
         keys = ["1", "4"];
-        keys(strcmp(keys, same_key)) = [];
-        different_key = keys;
+        different_key = keys(keys ~= same_key);
         
         key = num2str(same);
         key(logical(same)) = same_key;
