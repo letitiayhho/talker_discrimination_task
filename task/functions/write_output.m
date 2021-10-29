@@ -1,12 +1,9 @@
 function write_output(subject, block, stim, rt, resp, correct)
 
     % get output filename for this subject and black
-    fpath = ['task/output/subj' num2str(subject) 'block' num2str(block) '.csv'];
+    fpath = fullfile('task', 'output', ['subj', num2str(subject), 'block', num2str(block), '.csv']);
 
     % create data frame
-    if ~isnan(resp)
-        resp = string(resp);
-    end
     row = [stim, table(rt, resp, correct)];
     row = strjoin(table2array(row), ',');
     row = strcat('\n', row);

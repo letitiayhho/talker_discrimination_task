@@ -15,10 +15,12 @@ function [rt, resp] = collect_response(ptb)
     
     % check response
     if isempty(rt) % no response
-        rt = nan;
-        resp = nan;
-    end 
-    rt = rt - resp_start; %  response time
+        rt = "nan";
+        resp = "nan";
+    else 
+        rt = rt - resp_start; %  response time
+        resp = string(resp);
+    end
     if numel(rt) > 1 % more than 1 response
         ind = find(rt>0,1); % use 1st proper rt
         rt = rt(ind);
