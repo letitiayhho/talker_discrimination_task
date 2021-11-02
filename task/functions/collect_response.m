@@ -3,7 +3,7 @@ function [rt, resp] = collect_response(ptb)
     % start collecting response
     ListenChar(2); % disable matlab command window
     RTBox('clear');
-    Priority(1);
+    Priority(2);
 
     % show response accepting
     DrawFormattedText(ptb.window, 'x', 'center', 'center', 1);
@@ -12,16 +12,14 @@ function [rt, resp] = collect_response(ptb)
     % wait for response
     timeout = 1.5;
     [rt, resp] = RTBox(timeout);
+    rt = rt - resp_start; %  response time
+    resp = string(resp);
     
     % check response
     if isempty(rt) % no response
         rt = "nan";
         resp = "nan";
-    else 
-        rt = rt - resp_start; %  response time
-        resp = string(resp);
-    end
-    if numel(rt) > 1 % more than 1 response
+    elseif numel(rt) > 1 % more than 1 response
         ind = find(rt>0,1); % use 1st proper rt
         rt = rt(ind);
         resp = resp{ind};
