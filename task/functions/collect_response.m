@@ -16,15 +16,15 @@ function [rt, resp] = collect_response(ptb)
     resp = string(resp);
     
     % check response
+    if numel(rt) > 1 
+        rt = rt(1); % keep only first repsonse
+        resp = resp{1};
+    end
     if isempty(rt) % no response
         rt = "nan";
         resp = "nan";
-    elseif numel(rt) > 1 % more than 1 response
-        ind = find(rt>0,1); % use 1st proper rt
-        rt = rt(ind);
-        resp = resp{ind};
     end
-
+    
     % end of accepting response
     Screen('Flip', ptb.window);
     ListenChar(0); % renables matlab command window
