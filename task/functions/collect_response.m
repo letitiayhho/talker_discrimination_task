@@ -18,7 +18,7 @@ function [rt, resp] = collect_response(ptb)
     % check response
     if numel(rt) > 1 
         rt = rt(1); % keep only first repsonse
-        resp = resp{1};
+        resp = string(resp{1});
     end
     if isempty(rt) % no response
         rt = "nan";
