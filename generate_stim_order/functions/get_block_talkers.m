@@ -2,10 +2,10 @@ function [talker1, talker2, same, key] = get_block_talkers(block_type, same_key)
 if strcmp(block_type, "training")
     talker1 = ["A"; "B"; "B"; "A"; "X"; "Y"; "X"; "Y"];
     talker2 = ["A"; "B"; "A"; "B"; "X"; "Y"; "Y"; "X"];
-elseif strcmp(block_type, "same")
+elseif strcmp(block_type, "s")
     talker1 = ["A"; "B"; "B"; "A"];
     talker2 = ["A"; "B"; "A"; "B"];
-elseif strcmp(block_type, "different")
+elseif strcmp(block_type, "d")
     talker1 = ["X"; "Y"; "X"; "Y"];
     talker2 = ["X"; "Y"; "Y"; "X"];
 end
