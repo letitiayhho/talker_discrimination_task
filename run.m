@@ -2,6 +2,7 @@
 
 SUBJ_NUM = 0; % numeric
 BLOCK = 3; % numeric
+PILOT = true;
 TEST = false; % logical
 
 %%%%%%%%%%%%%%%%%%%%%%%%%
@@ -44,7 +45,7 @@ for trial = 1:N_TRIALS
     present_stimulus(PTB, stim2);
     [rt, resp] = collect_response(PTB);
     correct = check_answer(key, resp);
-    write_output(SUBJ_NUM, BLOCK, STIM(trial,:), rt, resp, correct)
+    write_output(SUBJ_NUM, BLOCK, STIM(trial,:), rt, resp, correct, PILOT)
     
     if BLOCK == 1
         give_feedback(correct, PTB);
