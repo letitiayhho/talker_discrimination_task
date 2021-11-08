@@ -7,12 +7,15 @@ function [stim_order, same_key, n_trials]  = generate_stim_order(subject_number,
     % Get same key
     same_key = get_same_key();
     
+    % Get block order
+    [vowel_space, n_trials] = get_block_type(block); 
+    
     % SET SEED for different blocks
     seed = str2double(strcat(num2str(subject_number), num2str(block)));
     rng(seed)
 
     % Get talker order
-    [talker1, talker2, same, key, n_trials, same_key, vowel_space] = get_talker_order(block, same_key);
+    [talker1, talker2, same, key, vowel_space] = get_talker_order(same_key, vowel_space, n_trials);
 
     % Get vowel order
     [vowel1, vowel2] = get_vowel_order(block);
