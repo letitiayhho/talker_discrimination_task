@@ -39,8 +39,10 @@ for BLOCK = BLOCKS
     %% Task
     for trial = 1:N_TRIALS
         [stim1, stim2, same, key] = get_trial_stim(STIM, trial);
-
-        WaitSecs(2);
+        
+        isi = 4;
+        toc 
+        WaitSecs(isi - toc);
         fixation(PTB); % show fixation cross to start trial
 
         present_stimulus(PTB, stim1);
