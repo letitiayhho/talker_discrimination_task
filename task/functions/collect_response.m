@@ -10,7 +10,7 @@ function [rt, resp] = collect_response(ptb)
     resp_start = Screen('Flip', ptb.window);
 
     % wait for response
-    timeout = 1.5;
+    timeout = 10;
     [rt, resp] = RTBox(timeout);
     rt = rt - resp_start; %  response time
     resp = string(resp);

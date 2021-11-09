@@ -8,5 +8,5 @@ talker, press the "<same>" button, if they were spoken by
 different talkers, press the "<different>" button.
 An "x" will appear after the vowels are played to 
 indicate when you should enter your response.
-Try to respond as quickly and accurately as possible.
+Take your time and try to respond as accurately as possible.
 
