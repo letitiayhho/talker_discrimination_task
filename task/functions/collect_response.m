@@ -6,7 +6,7 @@ function [rt, resp] = collect_response(ptb)
     Priority(2);
 
     % show response accepting
-    tic;
+    response_timer = tic;
     DrawFormattedText(ptb.window, 'x', 'center', 'center', 1);
     resp_start = Screen('Flip', ptb.window);
 
@@ -28,7 +28,7 @@ function [rt, resp] = collect_response(ptb)
     
     % control response time
     response_window = 2;
-    WaitSecs(response_window-toc);
+    WaitSecs(response_window-toc(response_timer));
     
     % end of accepting response
     Screen('Flip', ptb.window);
