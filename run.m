@@ -33,28 +33,24 @@ for BLOCK = BLOCKS
     [STIM, SAME_KEY, N_TRIALS] = generate_stim_order(SUBJ_NUM, BLOCK);
 
     %% Display instructions
-%     update_instructions(BLOCK, SAME_KEY)  
-%     instructions(PTB, BLOCK);
+    update_instructions(BLOCK, SAME_KEY)  
+    instructions(PTB, BLOCK);
     tic
 
     %% Task
     for trial = 1:N_TRIALS
         iti = 5;
         WaitSecs(iti - toc);
-        actual_iti = toc
         tic
         [stim1, stim2, same, key] = get_trial_stim(STIM, trial);
         
         fixation(PTB); % show fixation cross to start trial
-        fixation_time = toc
         WaitSecs(1.25 - toc);
         
         present_stimulus(PTB, stim1);
         WaitSecs(2 - toc);
         present_stimulus(PTB, stim2);
-        start_till_end_of_stim = toc
         [rt, resp] = collect_response(PTB);
-        end_of_response = toc
         correct = check_answer(key, resp);
         write_output(SUBJ_NUM, BLOCK, STIM(trial,:), rt, resp, correct, PILOT)
 
