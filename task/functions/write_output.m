@@ -19,6 +19,11 @@ function write_output(subject, block, stim, rt, resp, correct, pilot)
         fprintf(f, row);
         fclose(f);
     else
+        warning('File already exists')
+        fpath = insertBefore(fpath, '.csv', '_1');
+        f = fopen(fpath, 'a');
+        fprintf(f, row); 
+        fclose(f);
         f = fopen(fpath, 'a');
         fprintf(f, row); 
         fclose(f);
