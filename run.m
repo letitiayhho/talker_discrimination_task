@@ -1,6 +1,6 @@
 %%%%%%%%%%%%%%%%%%%%%%%%% UPDATE THIS SECTION BEFORE EACH SUBJECT/TEST
 
-SUBJ_NUM = 2; % numeric
+SUBJ_NUM = 0; % numeric
 PILOT = true; % logical
 TEST = false; % logical
 
@@ -26,7 +26,7 @@ PTB = init_psychtoolbox(FS);
 init_RTBox(RTBOX);
 
 %% Loop over blocks
-BLOCKS = 1:5;
+BLOCKS = 2:5;
 
 for BLOCK = BLOCKS
     % Load stim order
@@ -35,16 +35,20 @@ for BLOCK = BLOCKS
     %% Display instructions
     update_instructions(BLOCK, SAME_KEY)  
     instructions(PTB, BLOCK);
+    tic
 
     %% Task
     for trial = 1:N_TRIALS
+        iti = 5;
+        WaitSecs(iti - toc);
+        tic
         [stim1, stim2, same, key] = get_trial_stim(STIM, trial);
-
-        WaitSecs(2);
+        
         fixation(PTB); % show fixation cross to start trial
-
+        WaitSecs(1.25 - toc);
+        
         present_stimulus(PTB, stim1);
-        WaitSecs(.25);
+        WaitSecs(2 - toc);
         present_stimulus(PTB, stim2);
         [rt, resp] = collect_response(PTB);
         correct = check_answer(key, resp);

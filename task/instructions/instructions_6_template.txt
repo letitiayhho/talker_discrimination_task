@@ -1,8 +1,8 @@
 Welcome to experiment block #<block>. There will be four total 
 experiment blocks. As before, please press the "<same>"
 button if the vowels were spoken by the same talker and the
-"<different>" button otherwise. Please try to respond as quickly
-and accurately as you can. No feedback will be given for
+"<different>" button otherwise. Try your best to respond as
+accurately as you can. No feedback will be given for
 for your answers.
 
 Good luck!
