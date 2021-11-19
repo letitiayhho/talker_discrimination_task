@@ -5,7 +5,7 @@ of each trial. After the fixation cross, two vowels will
 be played to you. 
 If you think the vowels were spoken by the same
 talker, press the "4" button, if they were spoken by
-different talkers, press the "1" button.
+different talkers, press the "1" button on the response box.
 An "x" will appear after the vowels are played to 
 indicate when you should enter your response.
 Take your time and try to respond as accurately as possible.
