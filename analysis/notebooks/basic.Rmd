@@ -1,0 +1,89 @@
+---
+title: "Talker discrimination task"
+output: html_notebook
+---
+
+```{r include = FALSE}
+library(ggplot2)
+library(dplyr)
+```
+
+```{r, include = FALSE, warning = FALSE, message = FALSE, error=  FALSE}
+setwd("/Users/letitiaho/src/talker_discrimination_data_processing/")
+df <- read.csv("intermediate_data/experiment.csv")
+
+# Remove training data
+df <- df[!(df$vowel_space == "training"),]
+
+# Drop subject 15 and 19
+df <- df[!(df$subject == 15),]
+df <- df[!(df$subject == 19),]
+
+# Global vars
+subjects <- unique(df$subject)
+```
+
+**Accuracy by vowel space**
+```{r, echo = FALSE, warning = FALSE, message = FALSE, error = FALSE}
+accuracy <- df %>% 
+  group_by(subject, vowel_space) %>% 
+  summarise(accuracy = sum(correct == 1) / n())
+
+# Boxplots
+ggplot(accuracy, aes(x=vowel_space, y=accuracy)) + 
+  geom_boxplot() +
+  ggtitle("Figure 1.") + 
+  xlab("Vowel space")
+
+# Plot individual subjects
+ggplot(accuracy, aes(x=vowel_space, y=accuracy, group = subject)) + 
+  geom_point() +
+  geom_line() + 
+  ggtitle("Figure 2.") +
+  xlab("Vowel space")
+```
+
+**Accuracy by vowel space and vowel pairing**
+```{r, echo = FALSE, warning = FALSE, message = FALSE, error = FALSE}
+accuracy <- df %>%
+  group_by(subject, vowel_space, same) %>%
+  summarise(accuracy = sum(correct == 1) / n())
+
+# Boxplots
+ggplot(accuracy, aes(x=vowel_space, y=accuracy, fill=as.factor(same))) + 
+  geom_boxplot() +
+  ggtitle("Figure 3.") +
+  xlab("Vowel space") +
+  scale_fill_discrete("Pairing", labels = c("mismatched", "matched"))
+```
+
+**Accuracy by vowel space and vowel identity (for matched pairs)**
+```{r, echo = FALSE, warning = FALSE, message = FALSE, error = FALSE}
+accuracy <- df %>%
+  filter(vowel1 == vowel2) %>%
+  group_by(subject, vowel_space, vowel1) %>%
+  summarise(accuracy = sum(correct == 1) / n())
+
+# Boxplots
+ggplot(accuracy, aes(x=vowel_space, y=accuracy, fill=as.factor(vowel1))) + 
+  geom_boxplot() +
+  ggtitle("Figure 4.") +
+  xlab("Vowel space") +
+  scale_fill_discrete("Vowel")
+```
+
+**Reaction times**
+```{r, echo = FALSE, warning = FALSE, message = FALSE, error = FALSE}
+# Keep only rows with RTs
+rts <- df[!is.na(df$rt),]
+
+# Remove outliers
+rts <- rts[(!rts$rt %in% boxplot.stats(rts$rt)$out),]
+
+# Plot
+ggplot(rts, aes(x=vowel_space, y=rt, fill=as.factor(same))) + 
+  geom_boxplot() +
+  ggtitle("Figure 5.") +
+  xlab("Vowel space") +
+  scale_fill_discrete("Pairing", labels = c("mismatched", "matched"))
+```
