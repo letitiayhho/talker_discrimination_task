@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Talker discrimination task</title>
+        <script src="jspsych/jspsych.js"></script>
+        <script src="jspsych/plugin-html-keyboard-response.js"></script>
+        <script src="jspsych/plugin-audio-keyboard-response.js"></script>
+        <script src="jspsych/plugin-preload.js"></script>
+        <link href="jspsych/jspsych.css" rel="stylesheet" type="text/css" />
+    </head>
+    <body></body>
+    <script>
+
+
+        // set up
+
+        // initialize jsPsych
+        const jsPsych = initJsPsych({
+                    on_finish: function() {
+                                jsPsych.data.displayData();
+                                const data = jsPsych.data.get().json();
+                                save_data_to_server(data);
+                            }
+                });
+
+        // create timeline
+        let timeline = [];
+
+        // preload images
+        const preload = {
+                    type: jsPsychPreload,
+                    auto_preload: true,
+                };
+
+
+
+        // define trials
+
+        // define welcome message trial
+        const welcome = {
+                    type: jsPsychHtmlKeyboardResponse,
+                    stimulus: "Welcome to the experiment. Press any key to begin."
+                };
+
+        // define instructions trial
+        const instructions = {
+                    type: jsPsychHtmlKeyboardResponse,
+                    stimulus: `
+                    <p>In this experiment, a circle will appear in the center
+       of the screen.</p><p>If the circle is <strong>blue</strong>, press the letter F on the keyboard as fast as you can.</p><p>If the circle is <strong>orange</strong>, press the letter J as fast as you can.</p>
+       <p>Press any key to begin.</p>
+        `,
+                    post_trial_gap: 2000
+                };
+
+        // define fixation trial
+        const fixation = {
+                    type: jsPsychHtmlKeyboardResponse,
+                    stimulus: '<div style="font-size:60px;">+</div>',
+                    choices: "NO_KEYS",
+                    trial_duration: 1000,
+                    data: {
+                                task: "fixation"
+                            }
+                };
+
+        // define trial stimuli array for timeline variables
+        const similar_vowels_stimuli = [
+                    { stimulus: "stim/A/AA1.wav", vowel: "AA", talker: "A", vowel_space: "similar" },
+                    { stimulus: "stim/A/AA2.wav", vowel: "AA", talker: "A", vowel_space: "similar" },
+                    { stimulus: "stim/A/AA3.wav", vowel: "AA", talker: "A", vowel_space: "similar" },
+                    { stimulus: "stim/A/EH1.wav", vowel: "EH", talker: "A", vowel_space: "similar" },
+                    { stimulus: "stim/A/EH2.wav", vowel: "EH", talker: "A", vowel_space: "similar" },
+                    { stimulus: "stim/A/EH3.wav", vowel: "EH", talker: "A", vowel_space: "similar" },
+                    { stimulus: "stim/A/IH1.wav", vowel: "IH", talker: "A", vowel_space: "similar" },
+                    { stimulus: "stim/A/IH2.wav", vowel: "IH", talker: "A", vowel_space: "similar" },
+                    { stimulus: "stim/A/IH3.wav", vowel: "IH", talker: "A", vowel_space: "similar" },
+                    { stimulus: "stim/A/OO1.wav", vowel: "OO", talker: "A", vowel_space: "similar" },
+                    { stimulus: "stim/A/OO2.wav", vowel: "OO", talker: "A", vowel_space: "similar" },
+                    { stimulus: "stim/A/OO3.wav", vowel: "OO", talker: "A", vowel_space: "similar" },
+
+                    { stimulus: "stim/B/AA1.wav", vowel: "AA", talker: "B", vowel_space: "similar" },
+                    { stimulus: "stim/B/AA2.wav", vowel: "AA", talker: "B", vowel_space: "similar" },
+                    { stimulus: "stim/B/AA3.wav", vowel: "AA", talker: "B", vowel_space: "similar" },
+                    { stimulus: "stim/B/EH1.wav", vowel: "EH", talker: "B", vowel_space: "similar" },
+                    { stimulus: "stim/B/EH2.wav", vowel: "EH", talker: "B", vowel_space: "similar" },
+                    { stimulus: "stim/B/EH3.wav", vowel: "EH", talker: "B", vowel_space: "similar" },
+                    { stimulus: "stim/B/IH1.wav", vowel: "IH", talker: "B", vowel_space: "similar" },
+                    { stimulus: "stim/B/IH2.wav", vowel: "IH", talker: "B", vowel_space: "similar" },
+                    { stimulus: "stim/B/IH3.wav", vowel: "IH", talker: "B", vowel_space: "similar" },
+                    { stimulus: "stim/B/OO1.wav", vowel: "OO", talker: "B", vowel_space: "similar" },
+                    { stimulus: "stim/B/OO2.wav", vowel: "OO", talker: "B", vowel_space: "similar" },
+                    { stimulus: "stim/B/OO3.wav", vowel: "OO", talker: "B", vowel_space: "similar" },
+                    ];
+
+        const different_vowels_stimuli = [
+                    { stimulus: "stim/X/AA1.wav", vowel: "AA", talker: "X", vowel_space: "different" },
+                    { stimulus: "stim/X/AA2.wav", vowel: "AA", talker: "X", vowel_space: "different" },
+                    { stimulus: "stim/X/AA3.wav", vowel: "AA", talker: "X", vowel_space: "different" },
+                    { stimulus: "stim/X/EH1.wav", vowel: "EH", talker: "X", vowel_space: "different" },
+                    { stimulus: "stim/X/EH2.wav", vowel: "EH", talker: "X", vowel_space: "different" },
+                    { stimulus: "stim/X/EH3.wav", vowel: "EH", talker: "X", vowel_space: "different" },
+                    { stimulus: "stim/X/IH1.wav", vowel: "IH", talker: "X", vowel_space: "different" },
+                    { stimulus: "stim/X/IH2.wav", vowel: "IH", talker: "X", vowel_space: "different" },
+                    { stimulus: "stim/X/IH3.wav", vowel: "IH", talker: "X", vowel_space: "different" },
+                    { stimulus: "stim/X/OO1.wav", vowel: "OO", talker: "X", vowel_space: "different" },
+                    { stimulus: "stim/X/OO2.wav", vowel: "OO", talker: "X", vowel_space: "different" },
+                    { stimulus: "stim/X/OO3.wav", vowel: "OO", talker: "X", vowel_space: "different" },
+
+                    { stimulus: "stim/Y/AA1.wav", vowel: "AA", talker: "Y", vowel_space: "different" },
+                    { stimulus: "stim/Y/AA2.wav", vowel: "AA", talker: "Y", vowel_space: "different" },
+                    { stimulus: "stim/Y/AA3.wav", vowel: "AA", talker: "Y", vowel_space: "different" },
+                    { stimulus: "stim/Y/EH1.wav", vowel: "EH", talker: "Y", vowel_space: "different" },
+                    { stimulus: "stim/Y/EH2.wav", vowel: "EH", talker: "Y", vowel_space: "different" },
+                    { stimulus: "stim/Y/EH3.wav", vowel: "EH", talker: "Y", vowel_space: "different" },
+                    { stimulus: "stim/Y/IH1.wav", vowel: "IH", talker: "Y", vowel_space: "different" },
+                    { stimulus: "stim/Y/IH2.wav", vowel: "IH", talker: "Y", vowel_space: "different" },
+                    { stimulus: "stim/Y/IH3.wav", vowel: "IH", talker: "Y", vowel_space: "different" },
+                    { stimulus: "stim/Y/OO1.wav", vowel: "OO", talker: "Y", vowel_space: "different" },
+                    { stimulus: "stim/Y/OO2.wav", vowel: "OO", talker: "Y", vowel_space: "different" },
+                    { stimulus: "stim/Y/OO3.wav", vowel: "OO", talker: "Y", vowel_space: "different" },
+                    ];
+
+        // test trials
+        const test = {
+                    type: jsPsychAudioKeyboardResponse,
+                    stimulus: jsPsych.timelineVariable('stimulus'),
+                    choices: "NO_CHOICE",
+                    trial_ends_after_audio: true,
+                    data: {
+                                task: "stim",
+                                vowel_space: jsPsych.timelineVariable("vowel_space"),
+                                correct_response: jsPsych.timelineVariable("correct_response"),
+                            },
+                    on_finish: function(data){
+                                data.correct = jsPsych.pluginAPI.compareKeys(data.response, data.correct_response);
+                            }
+                };
+
+        // pause
+        const pause = {
+                    type: jsPsychHtmlKeyboardResponse,
+                    stimulus: "",
+                    choices: "NO_KEYS",
+                    trial_duration: 500,
+                };
+
+        // collect response
+        const collect_response = {
+                    type: jsPsychHtmlKeyboardResponse,
+                    stimulus: "",
+                    choices: ["f", "j"],
+                    data: {
+                                task: "response"
+                            }
+                };
+
+        // define test procedure that orders and presents test trials
+        const similar_vowels_procedure = {
+                    timeline: [fixation, test, pause, test, collect_response, pause],
+                    timeline_variables: similar_vowels_stimuli,
+                    randomize_order: true,
+                    repetitions: 1,
+                };
+
+        const different_vowels_procedure = {
+                    timeline: [fixation, test, pause, test, collect_response, pause],
+                    timeline_variables: different_vowels_stimuli,
+                    randomize_order: true,
+                    repetitions: 1,
+                };
+
+        // define break between blocks
+        const intermission = {
+                    type: jsPsychHtmlKeyboardResponse,
+                    stimulus: `<p>This is the end of the block, you may now take a break.</p>
+                             <p>Press any key to continue.</p>`,
+                };
+
+        // define debrief
+        const end = {
+                    type: jsPsychHtmlKeyboardResponse,
+                    stimulus: function() {
+                                const trials = jsPsych.data.get().filter({task: "response"});
+                                const correct_trials = trials.filter({correct: true});
+                                const accuracy = Math.round(correct_trials.count() / trials.count() * 100);
+                                const rt = Math.round(correct_trials.select('rt').mean());
+
+                                return `<p>You responded correctly on ${accuracy}% of the trials.</p>
+       <p>Your average response time was ${rt}ms.</p>
+       <p>Press any key to complete the experiment. Thank you!</p>`;
+                            }
+                };
+
+
+
+        // adding data to all trials
+
+        // select subject ID
+        const subjectid = jsPsych.randomization.randomID(15);
+
+        // add subjectid to every trial
+        jsPsych.data.addProperties({
+                    subject: subjectid,
+                });
+
+        // create timeline and run experiment
+
+        // push trials to timeline
+        timeline.push(preload);
+        timeline.push(welcome);
+        timeline.push(instructions);
+
+        // if subject number fits a certain pattern
+        // generate stimuli order with matlab, feed in subject and block number
+
+        // testing something out
+        let block = 1
+        timeline.push(vowels_procedure)
+        timeline.push(intermission)
+        block++
+        timeline.push(vowels_procedure)
+        timeline.push(intermission)
+        block++
+        timeline.push(vowels_procedure)
+        timeline.push(intermission)
+        block++
+        timeline.push(vowels_procedure)
+        timeline.push(intermission)
+        block++
+
+        // end test
+
+        const first_number = subjectid.match(/^[0-9]*$/);
+        if(first_number < 5){
+
+            // push one test procedure
+                    timeline.push(similar_vowels_procedure);
+                    timeline.push(intermission);
+                    timeline.push(different_vowels_procedure);
+                    timeline.push(intermission);
+                    timeline.push(similar_vowels_procedure);
+                    timeline.push(intermission);
+                    timeline.push(different_vowels_procedure);
+
+            // otherwise push the other procedure
+                } else {
+                    timeline.push(different_vowels_procedure);
+                    timeline.push(intermission);
+                    timeline.push(similar_vowels_procedure);
+                    timeline.push(intermission);
+                    timeline.push(different_vowels_procedure);
+                    timeine.push(intermission);
+                    timeline.push(similar_vowels_procedure);
+                }
+        timeline.push(end);
+
+        // run the experiment
+        jsPsych.run(timeline);
+    </script>
+</html>
