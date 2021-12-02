@@ -93,48 +93,56 @@
                     { stimulus: "stim/B/OO3.wav", vowel: "OO", talker: "B", vowel_space: "similar" },
                     ];
 
-        const different_vowels_stimuli = [
-                    { stimulus: "stim/X/AA1.wav", vowel: "AA", talker: "X", vowel_space: "different" },
-                    { stimulus: "stim/X/AA2.wav", vowel: "AA", talker: "X", vowel_space: "different" },
-                    { stimulus: "stim/X/AA3.wav", vowel: "AA", talker: "X", vowel_space: "different" },
-                    { stimulus: "stim/X/EH1.wav", vowel: "EH", talker: "X", vowel_space: "different" },
-                    { stimulus: "stim/X/EH2.wav", vowel: "EH", talker: "X", vowel_space: "different" },
-                    { stimulus: "stim/X/EH3.wav", vowel: "EH", talker: "X", vowel_space: "different" },
-                    { stimulus: "stim/X/IH1.wav", vowel: "IH", talker: "X", vowel_space: "different" },
-                    { stimulus: "stim/X/IH2.wav", vowel: "IH", talker: "X", vowel_space: "different" },
-                    { stimulus: "stim/X/IH3.wav", vowel: "IH", talker: "X", vowel_space: "different" },
-                    { stimulus: "stim/X/OO1.wav", vowel: "OO", talker: "X", vowel_space: "different" },
-                    { stimulus: "stim/X/OO2.wav", vowel: "OO", talker: "X", vowel_space: "different" },
-                    { stimulus: "stim/X/OO3.wav", vowel: "OO", talker: "X", vowel_space: "different" },
-
-                    { stimulus: "stim/Y/AA1.wav", vowel: "AA", talker: "Y", vowel_space: "different" },
-                    { stimulus: "stim/Y/AA2.wav", vowel: "AA", talker: "Y", vowel_space: "different" },
-                    { stimulus: "stim/Y/AA3.wav", vowel: "AA", talker: "Y", vowel_space: "different" },
-                    { stimulus: "stim/Y/EH1.wav", vowel: "EH", talker: "Y", vowel_space: "different" },
-                    { stimulus: "stim/Y/EH2.wav", vowel: "EH", talker: "Y", vowel_space: "different" },
-                    { stimulus: "stim/Y/EH3.wav", vowel: "EH", talker: "Y", vowel_space: "different" },
-                    { stimulus: "stim/Y/IH1.wav", vowel: "IH", talker: "Y", vowel_space: "different" },
-                    { stimulus: "stim/Y/IH2.wav", vowel: "IH", talker: "Y", vowel_space: "different" },
-                    { stimulus: "stim/Y/IH3.wav", vowel: "IH", talker: "Y", vowel_space: "different" },
-                    { stimulus: "stim/Y/OO1.wav", vowel: "OO", talker: "Y", vowel_space: "different" },
-                    { stimulus: "stim/Y/OO2.wav", vowel: "OO", talker: "Y", vowel_space: "different" },
-                    { stimulus: "stim/Y/OO3.wav", vowel: "OO", talker: "Y", vowel_space: "different" },
+        const stim_order = [
+                    {"group":"0","block_number":1,"block_vowel_space":"training","rep":1,"vowel1":"IH","vowel2":"EH","exemplar1":1,"exemplar2":1,"talker1":"A","talker2":"B","path1":"stim/A/IH1.wav","path2":"stim/B/EH1.wav","same":0,"key":"f"},{"group":"0","block_number":1,"block_vowel_space":"training","rep":2,"vowel1":"OO","vowel2":"IH","exemplar1":3,"exemplar2":2,"talker1":"A","talker2":"A","path1":"stim/A/OO3.wav","path2":"stim/A/IH2.wav","same":1,"key":"j"},{"group":"0","block_number":1,"block_vowel_space":"training","rep":3,"vowel1":"IH","vowel2":"IH","exemplar1":2,"exemplar2":3,"talker1":"X","talker2":"X","path1":"stim/X/IH2.wav","path2":"stim/X/IH3.wav","same":1,"key":"j"},{"group":"0","block_number":1,"block_vowel_space":"training","rep":4,"vowel1":"EH","vowel2":"OO","exemplar1":2,"exemplar2":2,"talker1":"Y","talker2":"Y","path1":"stim/Y/EH2.wav","path2":"stim/Y/OO2.wav","same":1,"key":"j"},{"group":"0","block_number":1,"block_vowel_space":"training","rep":5,"vowel1":"OO","vowel2":"EH","exemplar1":1,"exemplar2":3,"talker1":"B","talker2":"A","path1":"stim/B/OO1.wav","path2":"stim/A/EH3.wav","same":0,"key":"f"},
                     ];
+        //const different_vowels_stimuli = [
+                    //{ stimulus: "stim/X/AA1.wav", vowel: "AA", talker: "X", vowel_space: "different" },
+                    //{ stimulus: "stim/X/AA2.wav", vowel: "AA", talker: "X", vowel_space: "different" },
+                    //{ stimulus: "stim/X/AA3.wav", vowel: "AA", talker: "X", vowel_space: "different" },
+                    //{ stimulus: "stim/X/EH1.wav", vowel: "EH", talker: "X", vowel_space: "different" },
+                    //{ stimulus: "stim/X/EH2.wav", vowel: "EH", talker: "X", vowel_space: "different" },
+                    //{ stimulus: "stim/X/EH3.wav", vowel: "EH", talker: "X", vowel_space: "different" },
+                    //{ stimulus: "stim/X/IH1.wav", vowel: "IH", talker: "X", vowel_space: "different" },
+                    //{ stimulus: "stim/X/IH2.wav", vowel: "IH", talker: "X", vowel_space: "different" },
+                    //{ stimulus: "stim/X/IH3.wav", vowel: "IH", talker: "X", vowel_space: "different" },
+                    //{ stimulus: "stim/X/OO1.wav", vowel: "OO", talker: "X", vowel_space: "different" },
+                    //{ stimulus: "stim/X/OO2.wav", vowel: "OO", talker: "X", vowel_space: "different" },
+                    //{ stimulus: "stim/X/OO3.wav", vowel: "OO", talker: "X", vowel_space: "different" },
+//
+                    //{ stimulus: "stim/Y/AA1.wav", vowel: "AA", talker: "Y", vowel_space: "different" },
+                    //{ stimulus: "stim/Y/AA2.wav", vowel: "AA", talker: "Y", vowel_space: "different" },
+                    //{ stimulus: "stim/Y/AA3.wav", vowel: "AA", talker: "Y", vowel_space: "different" },
+                    //{ stimulus: "stim/Y/EH1.wav", vowel: "EH", talker: "Y", vowel_space: "different" },
+                    //{ stimulus: "stim/Y/EH2.wav", vowel: "EH", talker: "Y", vowel_space: "different" },
+                    //{ stimulus: "stim/Y/EH3.wav", vowel: "EH", talker: "Y", vowel_space: "different" },
+                    //{ stimulus: "stim/Y/IH1.wav", vowel: "IH", talker: "Y", vowel_space: "different" },
+                    //{ stimulus: "stim/Y/IH2.wav", vowel: "IH", talker: "Y", vowel_space: "different" },
+                    //{ stimulus: "stim/Y/IH3.wav", vowel: "IH", talker: "Y", vowel_space: "different" },
+                    //{ stimulus: "stim/Y/OO1.wav", vowel: "OO", talker: "Y", vowel_space: "different" },
+                    //{ stimulus: "stim/Y/OO2.wav", vowel: "OO", talker: "Y", vowel_space: "different" },
+                    //{ stimulus: "stim/Y/OO3.wav", vowel: "OO", talker: "Y", vowel_space: "different" },
+                    //];
 
-        // test trials
-        const test = {
+        // play vowels
+        const play_vowel_1 = {
                     type: jsPsychAudioKeyboardResponse,
-                    stimulus: jsPsych.timelineVariable('stimulus'),
+                    stimulus: jsPsych.timelineVariable('path1'),
                     choices: "NO_CHOICE",
                     trial_ends_after_audio: true,
                     data: {
-                                task: "stim",
-                                vowel_space: jsPsych.timelineVariable("vowel_space"),
-                                correct_response: jsPsych.timelineVariable("correct_response"),
+                                task: "vowel",
                             },
-                    on_finish: function(data){
-                                data.correct = jsPsych.pluginAPI.compareKeys(data.response, data.correct_response);
-                            }
+                };
+
+        const play_vowel_2 = {
+                    type: jsPsychAudioKeyboardResponse,
+                    stimulus: jsPsych.timelineVariable('path2'),
+                    choices: "NO_CHOICE",
+                    trial_ends_after_audio: true,
+                    data: {
+                                task: "vowel",
+                            },
                 };
 
         // pause
@@ -151,23 +159,24 @@
                     stimulus: "",
                     choices: ["f", "j"],
                     data: {
-                                task: "response"
-                            }
+                                task: "response",
+                                vowel_space: jsPsych.timelineVariable("block_vowel_space"),
+                                talker1 : jsPsych.timelineVariable("talker1"),
+                                talker2 : jsPsych.timelineVariable("talker2"),
+                                vowel1: jsPsych.timelineVariable("vowel1"),
+                                vowel2: jsPsych.timelineVariable("vowel2"),
+                                same: jsPsych.timelineVariable("same"),
+                                correct_response: jsPsych.timelineVariable("key"),
+                            },
+                    on_finish: function(data){
+                                data.correct = jsPsych.pluginAPI.compareKeys(data.response, data.correct_response);
+                            },
                 };
 
         // define test procedure that orders and presents test trials
-        const similar_vowels_procedure = {
-                    timeline: [fixation, test, pause, test, collect_response, pause],
-                    timeline_variables: similar_vowels_stimuli,
-                    randomize_order: true,
-                    repetitions: 1,
-                };
-
-        const different_vowels_procedure = {
-                    timeline: [fixation, test, pause, test, collect_response, pause],
-                    timeline_variables: different_vowels_stimuli,
-                    randomize_order: true,
-                    repetitions: 1,
+        const play_vowels_procedure = {
+                    timeline: [fixation, play_vowel_1, pause, play_vowel_2, collect_response, pause],
+                    timeline_variables: stim_order,
                 };
 
         // define break between blocks
@@ -215,44 +224,46 @@
         // generate stimuli order with matlab, feed in subject and block number
 
         // testing something out
-        let block = 1
-        timeline.push(vowels_procedure)
-        timeline.push(intermission)
-        block++
-        timeline.push(vowels_procedure)
-        timeline.push(intermission)
-        block++
-        timeline.push(vowels_procedure)
-        timeline.push(intermission)
-        block++
-        timeline.push(vowels_procedure)
-        timeline.push(intermission)
-        block++
+        //let block = 1
+        //timeline.push(play_vowels_procedure)
+        //timeline.push(intermission)
+        //block++
+        //timeline.push(play_vowels_procedure)
+        //timeline.push(intermission)
+        //block++
+        //timeline.push(play_vowels_procedure)
+        //timeline.push(intermission)
+        //block++
+        //timeline.push(play_vowels_procedure)
+        //timeline.push(intermission)
+        //block++
 
         // end test
 
-        const first_number = subjectid.match(/^[0-9]*$/);
-        if(first_number < 5){
+        //const first_number = subjectid.match(/^[0-9]*$/);
+        //if(first_number < 5){
 
             // push one test procedure
-                    timeline.push(similar_vowels_procedure);
-                    timeline.push(intermission);
-                    timeline.push(different_vowels_procedure);
-                    timeline.push(intermission);
-                    timeline.push(similar_vowels_procedure);
-                    timeline.push(intermission);
-                    timeline.push(different_vowels_procedure);
+                    //timeline.push(play_similar_vowels_procedure);
+                    //timeline.push(intermission);
+          //          timeline.push(different_vowels_procedure);
+            //        timeline.push(intermission);
+              //      timeline.push(similar_vowels_procedure);
+                //    timeline.push(intermission);
+                  //  timeline.push(different_vowels_procedure);
 
             // otherwise push the other procedure
-                } else {
-                    timeline.push(different_vowels_procedure);
-                    timeline.push(intermission);
-                    timeline.push(similar_vowels_procedure);
-                    timeline.push(intermission);
-                    timeline.push(different_vowels_procedure);
-                    timeine.push(intermission);
-                    timeline.push(similar_vowels_procedure);
-                }
+              //  } else {
+                //    timeline.push(different_vowels_procedure);
+                    //timeline.push(intermission);
+                    //timeline.push(similar_vowels_procedure);
+                    //timeline.push(intermission);
+                    //timeline.push(different_vowels_procedure);
+                    //timeine.push(intermission);
+                    //timeline.push(similar_vowels_procedure);
+                //}
+        timeline.push(play_vowels_procedure);
+        timeline.push(intermission);
         timeline.push(end);
 
         // run the experiment
