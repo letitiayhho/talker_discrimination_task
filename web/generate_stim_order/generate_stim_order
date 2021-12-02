@@ -1,0 +1,26 @@
+#!/bin/bash
+set -exuo pipefail
+
+usage () {
+    cat << eof >&2
+usage: $0 <group number>
+
+    description
+        wrapper script to run the matlab script
+        to generate the stimuli order based on
+        first digit that appears in the randomly
+        generated subjectid
+eof
+    exit 1
+}
+
+if [[ $# -ne 1 ]]; then
+    usage
+fi
+
+GIT_HOME="$(git rev-parse --show-toplevel)"
+cd "$GIT_HOME"
+
+group_number="$1"
+
+matlab -nodisplay -r "addpath('web/generate_stim_order/functions'); generate_stim_order('$group_number'); quit"

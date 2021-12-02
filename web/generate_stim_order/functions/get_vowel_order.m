@@ -1,4 +1,4 @@
-function [vowel1, vowel2] = get_vowel_order(block)
+function [vowel1, vowel2] = get_vowel_order(block_vowel_space)
     possible_vowels = ["AA", "EH", "IH", "OO"];
 
     while true
@@ -13,7 +13,7 @@ function [vowel1, vowel2] = get_vowel_order(block)
             end
         end
         
-        if block == 1 % if training
+        if strcmp(block_vowel_space, "training") % if training
             % get 8 mismatched pairs for training trials
             vowel_order = datasample(vowel_order, 8, 'Replace', false);
             

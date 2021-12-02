@@ -1,4 +1,4 @@
 function same_key = get_same_key()        
-    keys = ['1', '4'];
+    keys = ['f', 'j'];
     same_key = datasample(keys, 1);
 end

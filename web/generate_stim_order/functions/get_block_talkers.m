@@ -18,7 +18,7 @@ key = get_key(same, same_key);
     end
 
     function [key] = get_key(same, same_key)
-        keys = ["1", "4"];
+        keys = ['f', 'j'];
         different_key = keys(keys ~= same_key);
         
         key = num2str(same);
