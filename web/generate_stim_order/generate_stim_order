@@ -3,7 +3,7 @@ set -exuo pipefail
 
 usage () {
     cat << eof >&2
-usage: $0 <group number>
+usage: $0
 
     description
         wrapper script to run the matlab script
@@ -14,13 +14,21 @@ eof
     exit 1
 }
 
-if [[ $# -ne 1 ]]; then
-    usage
-fi
-
 GIT_HOME="$(git rev-parse --show-toplevel)"
 cd "$GIT_HOME"
 
-group_number="$1"
+#matlab -nodisplay -r "addpath('web/generate_stim_order/functions'); generate_all_stim_orders(); quit"
 
-matlab -nodisplay -r "addpath('web/generate_stim_order/functions'); generate_stim_order('$group_number'); quit"
+data="web/stim_order_2.js"
+rm -f "$data"
+printf 'stim_order = [\n' >> "$data"
+
+for i in $(seq 0 9); do
+    group_json="web/generate_stim_order/stim_order/$i.json"
+    #printf 'const group%d = ' "$i" >> "$data"
+    printf '  ' >> "$data"
+    cat "$group_json" >> "$data"
+    printf ', \n' >> "$data"
+done
+
+printf ']\n' >> "$data"
