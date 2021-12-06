@@ -63,28 +63,71 @@ jsPsych.data.addProperties({
 
 //******* define trials
 
-// define welcome message trial
+// define welcome message
 const welcome = {
   type: jsPsychHtmlKeyboardResponse,
-  stimulus: "Welcome to the experiment. Press any key to begin.",
+  stimulus: `
+                <p>Welcome to the experiment.</p>
+                <p><i>Press any key to begin.</i></p>
+                `,
 };
 
-// define instructions trial
+// define instructions
 const instructions = {
   type: jsPsychHtmlKeyboardResponse,
   stimulus: `
             <p>In this experiment you will hear pairs of vowels.</p>
             <p>Your job is to determine whether the vowels were spoken by the same person.</p>
-            <p>After you hear each vowel pair, press the '${keys.same}' key if you think the vowels</p>
-            <p>were spoken by the same person.</p>
-            <p>If you think the vowels were spoken by different people press the '${keys.different}' key. </p>
-            <p>Try to respond as accurately as you can, you will receive your score at the end of the experiment</p>
-            <p>Press any key to begin.</p>
+            <p>After you hear each vowel pair, press the '${keys.same}' key if you think the vowels were spoken by the same person.</p>
+            <p>Conversely, press the '${keys.different}' if you think the vowels were spoken by different people</p>
+            <p>Try to respond as accurately as you can, you will receive your overall score at the end of the experiment.</p>
+            <p><i>Press any key to continue.</i></p>
 `,
-  post_trial_gap: 2000,
 };
 
-// define fixation trial
+// define training instructions
+const training_instructions = {
+    type: jsPsychHtmlKeyboardResponse,
+    stimulus: `
+            <p>This is the training block.</p>
+            <p>The training block contains a small number of training trials to help familiarize you with the experiment.</p>
+            <p>In this block you will receive feedback for each of your answers.</p>
+            <p><i>Press any key to begin.</i></p>
+            `,
+    post_trial_gap: 2000,
+};
+
+const post_training_instructions = {
+  type: jsPsychHtmlKeyboardResponse,
+  stimulus: function () {
+    const trials = jsPsych.data.get().filter({ task: "response" });
+    const correct_trials = trials.filter({ correct: true });
+    const accuracy = Math.round(
+      (correct_trials.count() / trials.count()) * 100
+    );
+    const rt = Math.round(correct_trials.select("rt").mean());
+
+    return `
+            <p>This is the end of the training block.</p>
+            <p>You responded correctly on ${accuracy}% of the trials.</p>
+            <p><i>Press the 'r' key if you would like to repeat the training block.</i></p>
+            <p><i>Press any other key to continue to the experiment blocks.</i></p>
+            `
+  },
+};
+
+// define start block
+function make_start_block(block_number) {
+    return {
+        type: jsPsychHtmlKeyboardResponse,
+        stimulus: `
+                <p>This is experiment block ${block_number-1}/4.</p>
+                <p><i>Press any key to begin.</i></p>
+                `
+    };
+}
+
+// define fixation
 const fixation = {
   type: jsPsychHtmlKeyboardResponse,
   stimulus: '<div style="font-size:60px;">+</div>',
@@ -147,18 +190,7 @@ const collect_response = {
   },
 };
 
-// conditional timeline for group number
-const trial = {
-    timeline: [
-        fixation,
-        play_vowel_1,
-        pause,
-        play_vowel_2,
-        collect_response,
-        pause,
-    ],
-}
-
+// all trials
 const block_node = {
   timeline: [
     fixation,
@@ -173,11 +205,30 @@ const block_node = {
     }),
 };
 
+// define conditional node to repeat training
+var if_node = {
+    timeline: [training_instructions, block_node, post_training_instructions],
+    conditional_function: function(){
+        // get the data from the previous trial,
+        // and check which key was pressed
+        var data = jsPsych.data.get().last(1).values()[0];
+        if(jsPsych.pluginAPI.compareKeys(data.response, 'r')){
+            return true;
+        } else {
+            return false;
+        }
+    }
+}
+
+
 // define break between blocks
 const intermission = {
   type: jsPsychHtmlKeyboardResponse,
-  stimulus: `<p>This is the end of the ${block_number}, out of 4 total blocks.<p></p>You may now take a break.</p>
-                     <p>Press any key to start the next block.</p>`,
+  stimulus: `
+              <p>This is the end of block ${block_number-1}.</p>
+              <p>You may now take a break.</p>
+              <p><i>Press any key to start the next block.</i></p>
+    `,
 };
 
 // define debrief
@@ -191,9 +242,11 @@ const end = {
     );
     const rt = Math.round(correct_trials.select("rt").mean());
 
-    return `<p>You responded correctly on ${accuracy}% of the trials.</p>
-<p>Your average response time was ${rt}ms.</p>
-<p>Press any key to complete the experiment. Thank you!</p>`;
+    return `<p>This is the end of the experiment.</p>
+            <p>You responded correctly on ${accuracy}% of the trials.</p>
+            <p>Your average response time was ${rt}ms.</p>
+            <p>Press any key to complete the experiment.</p>
+            <p>Thank you for participating!</p>`;
   },
 };
 
@@ -203,18 +256,25 @@ const end = {
 timeline.push(preload);
 timeline.push(welcome);
 timeline.push(instructions);
-timeline.push(block_node); // training block
-timeline.push(intermission);
+timeline.push(training_instructions);
+//timeline.push(block_node); // training block
+timeline.push(post_training_instructions);
+//timeline.push(if_node); // repeat training if 'r' pressed
 block_number++;
+console.log({block_number})
+timeline.push(make_start_block(block_number))
 timeline.push(block_node); // block 1
 timeline.push(intermission);
 block_number++;
+timeline.push(make_start_block(block_number))
 timeline.push(block_node); // block 2
 timeline.push(intermission);
 block_number++;
+timeline.push(make_start_block(block_number))
 timeline.push(block_node); // block 3
 timeline.push(intermission);
 block_number++;
+timeline.push(make_start_block(block_number))
 timeline.push(block_node); // block 4
 timeline.push(end);
 
