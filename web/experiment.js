@@ -75,15 +75,6 @@ const fixation = {
   },
 };
 
-// define trial stimuli array for timeline variables
-const group0_training = [
-  { group: "0", block_number: 1, block_vowel_space: "training", rep: 1, vowel1: "IH", vowel2: "EH", exemplar1: 1, exemplar2: 1, talker1: "A", talker2: "B", path1: "stim/A/IH1.wav", path2: "stim/B/EH1.wav", same: 0, key: "f", },
-  { group: "0", block_number: 1, block_vowel_space: "training", rep: 2, vowel1: "OO", vowel2: "IH", exemplar1: 3, exemplar2: 2, talker1: "A", talker2: "A", path1: "stim/A/OO3.wav", path2: "stim/A/IH2.wav", same: 1, key: "j", },
-  { group: "0", block_number: 1, block_vowel_space: "training", rep: 3, vowel1: "IH", vowel2: "IH", exemplar1: 2, exemplar2: 3, talker1: "X", talker2: "X", path1: "stim/X/IH2.wav", path2: "stim/X/IH3.wav", same: 1, key: "j", },
-  { group: "0", block_number: 1, block_vowel_space: "training", rep: 4, vowel1: "EH", vowel2: "OO", exemplar1: 2, exemplar2: 2, talker1: "Y", talker2: "Y", path1: "stim/Y/EH2.wav", path2: "stim/Y/OO2.wav", same: 1, key: "j", },
-  { group: "0", block_number: 1, block_vowel_space: "training", rep: 5, vowel1: "OO", vowel2: "EH", exemplar1: 1, exemplar2: 3, talker1: "B", talker2: "A", path1: "stim/B/OO1.wav", path2: "stim/A/EH3.wav", same: 0, key: "f", },
-];
-
 // play vowels
 const play_vowel_1 = {
   type: jsPsychAudioKeyboardResponse,
@@ -137,11 +128,11 @@ const collect_response = {
 };
 
 // define test procedure that orders and presents test trials
-const group0_training_proc = {
-  //timeline: [fixation]
-  //timeline: [fixation, play_vowel_1, pause, play_vowel_2, collect_response, pause],
-  //timeline_variables: group0_training,
-};
+//const group0_training_proc = {
+//timeline: [fixation]
+//timeline: [fixation, play_vowel_1, pause, play_vowel_2, collect_response, pause],
+//timeline_variables: group0_training,
+//};
 //const group1_training_proc = {
 //timeline: [fixation, play_vowel_1, pause, play_vowel_2, collect_response, pause],
 //timeline_variables: group1_training,
@@ -180,6 +171,8 @@ const group0_training_proc = {
 //};
 
 // conditional timeline for group number
+const block_number = 0;
+console.log(block_number)
 const if_node = {
   timeline: [
     fixation,
@@ -189,18 +182,18 @@ const if_node = {
     collect_response,
     pause,
   ],
-  //timeline: [group0_training_proc],
-  timeline_variables: group0_training, // try a conditional here?
-  conditional_function: function () {
-    console.log("if_node");
-    if (group_number === 0) {
-      console.log("true");
-      return true;
-    } else {
-      console.log("false");
-      return false;
-    }
-  },
+    timeline_variables: stim_order.filter(function(el, block_number) {
+        console.log(el);
+        console.log(group_number);
+        return el.group === group_number && el.block_number === block_number
+    }),
+  //@cconditional_function: function () {
+    //if (group_number === 0) {
+      //return true;
+    //} else {
+      //return false;
+    //}
+  //},
 };
 
 // define break between blocks

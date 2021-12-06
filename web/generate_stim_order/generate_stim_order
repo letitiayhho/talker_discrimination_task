@@ -17,18 +17,18 @@ eof
 GIT_HOME="$(git rev-parse --show-toplevel)"
 cd "$GIT_HOME"
 
-#matlab -nodisplay -r "addpath('web/generate_stim_order/functions'); generate_all_stim_orders(); quit"
+matlab -nodisplay -r "addpath('web/generate_stim_order/functions'); generate_all_stim_orders(); quit"
 
-data="web/stim_order_2.js"
-rm -f "$data"
-printf 'stim_order = [\n' >> "$data"
-
-for i in $(seq 0 9); do
-    group_json="web/generate_stim_order/stim_order/$i.json"
-    #printf 'const group%d = ' "$i" >> "$data"
-    printf '  ' >> "$data"
-    cat "$group_json" >> "$data"
-    printf ', \n' >> "$data"
-done
-
-printf ']\n' >> "$data"
+#data="web/stim_order_2.js"
+#rm -f "$data"
+#printf 'stim_order = [\n' >> "$data"
+#
+#for i in $(seq 0 9); do
+    #group_json="web/generate_stim_order/stim_order/$i.json"
+    ##printf 'const group%d = ' "$i" >> "$data"
+    #printf '  ' >> "$data"
+    #cat "$group_json" >> "$data"
+    #printf ', \n' >> "$data"
+#done
+#
+#printf ']\n' >> "$data"
