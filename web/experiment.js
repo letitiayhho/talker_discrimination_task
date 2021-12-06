@@ -12,6 +12,7 @@ const jsPsych = initJsPsych({
 
 // create timeline
 let timeline = [];
+let block_number = 1;
 
 // preload images
 const preload = {
@@ -171,9 +172,18 @@ const collect_response = {
 //};
 
 // conditional timeline for group number
-const block_number = 0;
-console.log(block_number)
-const if_node = {
+const trial = {
+    timeline: [
+        fixation,
+        play_vowel_1,
+        pause,
+        play_vowel_2,
+        collect_response,
+        pause,
+    ],
+}
+
+const block_node = {
   timeline: [
     fixation,
     play_vowel_1,
@@ -182,9 +192,10 @@ const if_node = {
     collect_response,
     pause,
   ],
-    timeline_variables: stim_order.filter(function(el, block_number) {
+    timeline_variables: stim_order.filter(function(el) {
         console.log(el);
         console.log(group_number);
+        console.log(block_number);
         return el.group === group_number && el.block_number === block_number
     }),
   //@cconditional_function: function () {
@@ -226,9 +237,19 @@ const end = {
 timeline.push(preload);
 timeline.push(welcome);
 timeline.push(instructions);
-timeline.push(if_node);
+timeline.push(block_node); // training block
 timeline.push(intermission);
-timeline.push(if_node);
+block_number++;
+timeline.push(block_node); // block 1
+timeline.push(intermission);
+block_number++;
+timeline.push(block_node); // block 2
+timeline.push(intermission);
+block_number++;
+timeline.push(block_node); // block 3
+timeline.push(intermission);
+block_number++;
+timeline.push(block_node); // block 4
 timeline.push(end);
 
 // run the experiment
