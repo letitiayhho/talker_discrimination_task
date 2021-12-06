@@ -22,8 +22,6 @@ const preload = {
 
 // select subject ID
 const subjectid = jsPsych.randomization.randomID(15);
-//const zero = '0';
-//const subjectid = zero.concat(id);
 console.log(subjectid);
 
 function computeBucket(s) {
@@ -34,15 +32,33 @@ function computeBucket(s) {
   const bucket = sum % 10;
   return bucket;
 }
-console.log(computeBucket(subjectid));
 
 // set first digit in subjectid as group number
-const group_number = parseInt(subjectid.match(/^[0-9]*/));
-console.log(group_number);
+const group = computeBucket(subjectid);
+console.log(group);
+
+// identify the key for same talker responses
+function getKeys() {
+    const keys = ['f', 'j'];
+    const same_key = (stim_order.filter(stim_order => stim_order.group === group && stim_order.same === 1))[1].key
+    const index = keys.indexOf(same_key);
+    keys.splice(index, 1);
+    const different_key = keys[0];
+    return {
+        same: same_key,
+        different: different_key
+    };
+}
+
+const keys = getKeys();
+console.log(keys.same)
+console.log(keys.different)
 
 // add subjectid to every trial
 jsPsych.data.addProperties({
   subject: subjectid,
+    group: group,
+    same_key: keys.same,
 });
 
 //******* define trials
@@ -58,9 +74,12 @@ const instructions = {
   type: jsPsychHtmlKeyboardResponse,
   stimulus: `
             <p>In this experiment you will hear pairs of vowels.</p>
-            <p>a circle will appear in the center
-of the screen.</p><p>If the circle is <strong>blue</strong>, press the letter F on the keyboard as fast as you can.</p><p>If the circle is <strong>orange</strong>, press the letter J as fast as you can.</p>
-<p>Press any key to begin.</p>
+            <p>Your job is to determine whether the vowels were spoken by the same person.</p>
+            <p>After you hear each vowel pair, press the '${keys.same}' key if you think the vowels</p>
+            <p>were spoken by the same person.</p>
+            <p>If you think the vowels were spoken by different people press the '${keys.different}' key. </p>
+            <p>Try to respond as accurately as you can, you will receive your score at the end of the experiment</p>
+            <p>Press any key to begin.</p>
 `,
   post_trial_gap: 2000,
 };
@@ -150,18 +169,8 @@ const block_node = {
     pause,
   ],
     timeline_variables: stim_order.filter(function(el) {
-        console.log(el);
-        console.log(group_number);
-        console.log(block_number);
-        return el.group === group_number && el.block_number === block_number
+        return el.group === group && el.block_number === block_number
     }),
-  //@cconditional_function: function () {
-    //if (group_number === 0) {
-      //return true;
-    //} else {
-      //return false;
-    //}
-  //},
 };
 
 // define break between blocks
