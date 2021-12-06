@@ -190,25 +190,42 @@ const collect_response = {
   },
 };
 
+// training block
+const training_block = {
+      timeline: [
+        fixation,
+        play_vowel_1,
+        pause,
+        play_vowel_2,
+        collect_response,
+        pause,
+      ],
+        timeline_variables: stim_order.filter(function(el) {
+            return el.group === group && el.block_number === 1
+        }),
+};
+
 // all trials
-const block_node = {
-  timeline: [
-    fixation,
-    play_vowel_1,
-    pause,
-    play_vowel_2,
-    collect_response,
-    pause,
-  ],
-    timeline_variables: stim_order.filter(function(el) {
-        return el.group === group && el.block_number === block_number
-    }),
+function make_experiment_block(block_number){
+    return {
+      timeline: [
+        fixation,
+        play_vowel_1,
+        pause,
+        play_vowel_2,
+        collect_response,
+        pause,
+      ],
+        timeline_variables: stim_order.filter(function(el) {
+            return el.group === group && el.block_number === block_number
+        }),
+    }
 };
 
 // define conditional node to repeat training
 var if_node = {
-    timeline: [training_instructions, block_node, post_training_instructions],
-    conditional_function: function(){
+    timeline: [training_instructions, training_block, post_training_instructions],
+    loop_function: function(){
         // get the data from the previous trial,
         // and check which key was pressed
         var data = jsPsych.data.get().last(1).values()[0];
@@ -257,25 +274,24 @@ timeline.push(preload);
 timeline.push(welcome);
 timeline.push(instructions);
 timeline.push(training_instructions);
-//timeline.push(block_node); // training block
+timeline.push(training_block); // training block
 timeline.push(post_training_instructions);
-//timeline.push(if_node); // repeat training if 'r' pressed
+timeline.push(if_node); // repeat training if 'r' pressed
 block_number++;
-console.log({block_number})
 timeline.push(make_start_block(block_number))
-timeline.push(block_node); // block 1
+timeline.push(make_experiment_block(block_number)); // block 1
 timeline.push(intermission);
 block_number++;
 timeline.push(make_start_block(block_number))
-timeline.push(block_node); // block 2
+timeline.push(make_experiment_block(block_number)); // block 2
 timeline.push(intermission);
 block_number++;
 timeline.push(make_start_block(block_number))
-timeline.push(block_node); // block 3
+timeline.push(make_experiment_block(block_number)); // block 3
 timeline.push(intermission);
 block_number++;
 timeline.push(make_start_block(block_number))
-timeline.push(block_node); // block 4
+timeline.push(make_experiment_block(block_number)); // block 4
 timeline.push(end);
 
 // run the experiment
