@@ -37,8 +37,7 @@ function computeBucket(s) {
 console.log(computeBucket(subjectid));
 
 // set first digit in subjectid as group number
-//const group_number = parseInt(subjectid.match(/^[0-9]*/));
-const group_number = 0;
+const group_number = parseInt(subjectid.match(/^[0-9]*/));
 console.log(group_number);
 
 // add subjectid to every trial
@@ -58,7 +57,8 @@ const welcome = {
 const instructions = {
   type: jsPsychHtmlKeyboardResponse,
   stimulus: `
-            <p>In this experiment, a circle will appear in the center
+            <p>In this experiment you will hear pairs of vowels.</p>
+            <p>a circle will appear in the center
 of the screen.</p><p>If the circle is <strong>blue</strong>, press the letter F on the keyboard as fast as you can.</p><p>If the circle is <strong>orange</strong>, press the letter J as fast as you can.</p>
 <p>Press any key to begin.</p>
 `,
@@ -128,49 +128,6 @@ const collect_response = {
   },
 };
 
-// define test procedure that orders and presents test trials
-//const group0_training_proc = {
-//timeline: [fixation]
-//timeline: [fixation, play_vowel_1, pause, play_vowel_2, collect_response, pause],
-//timeline_variables: group0_training,
-//};
-//const group1_training_proc = {
-//timeline: [fixation, play_vowel_1, pause, play_vowel_2, collect_response, pause],
-//timeline_variables: group1_training,
-//};
-//const group2_training_proc = {
-//timeline: [fixation, play_vowel_1, pause, play_vowel_2, collect_response, pause],
-//timeline_variables: group2_training,
-//};
-//const group3_training_proc = {
-//timeline: [fixation, play_vowel_1, pause, play_vowel_2, collect_response, pause],
-//timeline_variables: group3_training,
-//};
-//const group4_training_proc = {
-//timeline: [fixation, play_vowel_1, pause, play_vowel_2, collect_response, pause],
-//timeline_variables: group4_training,
-//};
-//const group5_training_proc = {
-//timeline: [fixation, play_vowel_1, pause, play_vowel_2, collect_response, pause],
-//timeline_variables: group5_training,
-//};
-//const group6_training_proc = {
-//timeline: [fixation, play_vowel_1, pause, play_vowel_2, collect_response, pause],
-//timeline_variables: group6_training,
-//};
-//const group7_training_proc = {
-//timeline: [fixation, play_vowel_1, pause, play_vowel_2, collect_response, pause],
-//timeline_variables: group7_training,
-//};
-//const group8_training_proc = {
-//timeline: [fixation, play_vowel_1, pause, play_vowel_2, collect_response, pause],
-//timeline_variables: group8_training,
-//};
-//const group9_training_proc = {
-//timeline: [fixation, play_vowel_1, pause, play_vowel_2, collect_response, pause],
-//timeline_variables: group9_training,
-//};
-
 // conditional timeline for group number
 const trial = {
     timeline: [
@@ -210,8 +167,8 @@ const block_node = {
 // define break between blocks
 const intermission = {
   type: jsPsychHtmlKeyboardResponse,
-  stimulus: `<p>This is the end of the block, you may now take a break.</p>
-                     <p>Press any key to continue.</p>`,
+  stimulus: `<p>This is the end of the ${block_number}, out of 4 total blocks.<p></p>You may now take a break.</p>
+                     <p>Press any key to start the next block.</p>`,
 };
 
 // define debrief
