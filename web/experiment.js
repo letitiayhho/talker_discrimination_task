@@ -13,6 +13,7 @@ const jsPsych = initJsPsych({
 // create timeline
 let timeline = [];
 let block_number = 1;
+let training_attempt_number = 1;
 
 // preload images
 const preload = {
@@ -100,7 +101,9 @@ const training_instructions = {
 const post_training_instructions = {
   type: jsPsychHtmlKeyboardResponse,
   stimulus: function () {
-    const trials = jsPsych.data.get().filter({ task: "response" });
+      console.log("fetching data");
+      console.log({training_attempt_number});
+    const trials = jsPsych.data.getLastTimelineData().filter({ task: "training_response" }).filter({ training_attempt: training_attempt_number});
     const correct_trials = trials.filter({ correct: true });
     const accuracy = Math.round(
       (correct_trials.count() / trials.count()) * 100
@@ -114,6 +117,7 @@ const post_training_instructions = {
             <p><i>Press any other key to continue to the experiment blocks.</i></p>
             `
   },
+    on_finish: function(){ training_attempt_number++; console.log({training_attempt_number}) },
 };
 
 // define start block
@@ -123,7 +127,8 @@ function make_start_block(block_number) {
         stimulus: `
                 <p>This is experiment block ${block_number-1}/4.</p>
                 <p><i>Press any key to begin.</i></p>
-                `
+                `,
+        post_trial_gap: 2000,
     };
 }
 
@@ -167,6 +172,32 @@ const pause = {
   trial_duration: 500,
 };
 
+// collect training response
+function make_collect_training_response(training_attempt_number) {
+  return {
+  type: jsPsychHtmlKeyboardResponse,
+  stimulus: "",
+  choices: ["f", "j"],
+  data: {
+    task: "training_response",
+    training_attempt: training_attempt_number,
+    vowel_space: jsPsych.timelineVariable("block_vowel_space"),
+    talker1: jsPsych.timelineVariable("talker1"),
+    talker2: jsPsych.timelineVariable("talker2"),
+    vowel1: jsPsych.timelineVariable("vowel1"),
+    vowel2: jsPsych.timelineVariable("vowel2"),
+    same: jsPsych.timelineVariable("same"),
+    correct_response: jsPsych.timelineVariable("key"),
+  },
+  on_finish: function (data) {
+    data.correct = jsPsych.pluginAPI.compareKeys(
+      data.response,
+      data.correct_response
+    );
+  },
+};
+};
+
 // collect response
 const collect_response = {
   type: jsPsychHtmlKeyboardResponse,
@@ -191,19 +222,21 @@ const collect_response = {
 };
 
 // training block
-const training_block = {
+function make_training_block(training_attempt_number) {
+    return {
       timeline: [
         fixation,
         play_vowel_1,
         pause,
         play_vowel_2,
-        collect_response,
+        make_collect_training_response(training_attempt_number),
         pause,
       ],
         timeline_variables: stim_order.filter(function(el) {
             return el.group === group && el.block_number === 1
         }),
 };
+}
 
 // all trials
 function make_experiment_block(block_number){
@@ -223,20 +256,20 @@ function make_experiment_block(block_number){
 };
 
 // define conditional node to repeat training
-var if_node = {
-    timeline: [training_instructions, training_block, post_training_instructions],
+var loop_node = {
+    timeline: [training_instructions, /*make_training_block(training_attempt_number),*/ post_training_instructions],
     loop_function: function(){
         // get the data from the previous trial,
         // and check which key was pressed
         var data = jsPsych.data.get().last(1).values()[0];
         if(jsPsych.pluginAPI.compareKeys(data.response, 'r')){
+            console.log("pressed 'r'");
             return true;
         } else {
             return false;
         }
-    }
-}
-
+    },
+};
 
 // define break between blocks
 const intermission = {
@@ -273,10 +306,10 @@ const end = {
 timeline.push(preload);
 timeline.push(welcome);
 timeline.push(instructions);
-timeline.push(training_instructions);
-timeline.push(training_block); // training block
-timeline.push(post_training_instructions);
-timeline.push(if_node); // repeat training if 'r' pressed
+//timeline.push(training_instructions);
+//timeline.push(make_training_block(training_attempt_number)); // training block
+//timeline.push(post_training_instructions);
+timeline.push(loop_node); // repeat training if 'r' pressed
 block_number++;
 timeline.push(make_start_block(block_number))
 timeline.push(make_experiment_block(block_number)); // block 1
