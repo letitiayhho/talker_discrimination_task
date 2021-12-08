@@ -39,7 +39,7 @@ console.log({ group });
 
 // identify the key for same talker responses
 function getKeys() {
-  const keys = ['f', 'j'];
+  const keys = ["f", "j"];
   const same_key = stim_order.filter(
     (stim_order) => stim_order.group === group && stim_order.same === 1
   )[1].key;
@@ -61,10 +61,6 @@ jsPsych.data.addProperties({
   group: group,
   same_key: keys.same,
 });
-
-
-
-
 
 //******* define set up instructions
 
@@ -101,7 +97,7 @@ const quiet1 = {
         <p>Nevertheless, we ask that you answer the following question honestly:</p>
         <p>Are you in a quiet place?</p>
         `,
-      options: ['I am in a quiet place', 'I am NOT in a quiet place'],
+      options: ["I am in a quiet place", "I am NOT in a quiet place"],
       required: true,
     },
   ],
@@ -110,7 +106,7 @@ const quiet1 = {
 const not_quiet = {
   type: jsPsychSurveyLikert,
   questions: [
-      {
+    {
       prompt: `
         <p>You indicated that you are not in a quiet place.</p>
         <p>We value your honesty above all else and you will receive some course credit<br>
@@ -119,14 +115,14 @@ const not_quiet = {
         <p>How quiet is it?</p>
         `,
       labels: [
-        'Little noise',
-        'Some noise',
-        'Medium noise',
-        'Pretty noisy',
-        'Very noisy',
+        "Little noise",
+        "Some noise",
+        "Medium noise",
+        "Pretty noisy",
+        "Very noisy",
       ],
       required: true,
-      },
+    },
   ],
 };
 
@@ -134,7 +130,7 @@ var quiet_node = {
   timeline: [not_quiet],
   conditional_function: function () {
     var data = jsPsych.data.getLastTrialData().values()[0];
-    if (data.response.Q0 === 'I am NOT in a quiet place') {
+    if (data.response.Q0 === "I am NOT in a quiet place") {
       return true;
     } else {
       return false;
@@ -152,7 +148,7 @@ var quiet2 = {
         the rest of the study. Please answer the following question honestly:</p>
         <p>Did you remove distractions from your environment?</p>
         `,
-      options: ['I removed distractions', 'I did NOT remove distractions'],
+      options: ["I removed distractions", "I did NOT remove distractions"],
       required: true,
     },
   ],
@@ -162,13 +158,13 @@ var repeat = {
   timeline: [
     {
       type: jsPsychAudioButtonResponse,
-      stimulus: 'stim/A/AA1.wav',
+      stimulus: "stim/A/AA1.wav",
       prompt: `
         <br>Please take a moment to listen to the sound and adjust your volume so what<br>
         the person is saying sounds clear. We encourage you to set your volume as loud<br>
         as you can without it being uncomfortable.
         `,
-      choices: ['Play again', 'Continue to the task'],
+      choices: ["Play again", "Continue to the task"],
     },
   ],
   loop_function: function (data) {
@@ -179,10 +175,6 @@ var repeat = {
     }
   },
 };
-
-
-
-
 
 //******* define task instructions
 
@@ -223,12 +215,12 @@ const post_training_instructions = {
   stimulus: function () {
     const trials = jsPsych.data
       .getLastTimelineData()
-      .filter({ task: 'response' });
+      .filter({ task: "response" });
     const correct_trials = trials.filter({ correct: true });
     const accuracy = Math.round(
       (correct_trials.count() / trials.count()) * 100
     );
-    const rt = Math.round(correct_trials.select('rt').mean());
+    const rt = Math.round(correct_trials.select("rt").mean());
 
     return `
                 <p>This is the end of the training block.</p>
@@ -270,12 +262,12 @@ const intermission = {
 const end = {
   type: jsPsychHtmlKeyboardResponse,
   stimulus: function () {
-    const trials = jsPsych.data.get().filter({ task: 'response' });
+    const trials = jsPsych.data.get().filter({ task: "response" });
     const correct_trials = trials.filter({ correct: true });
     const accuracy = Math.round(
       (correct_trials.count() / trials.count()) * 100
     );
-    const rt = Math.round(correct_trials.select('rt').mean());
+    const rt = Math.round(correct_trials.select("rt").mean());
 
     return `<p>This is the end of the experiment.</p>
             <p>You responded correctly on ${accuracy}% of the trials.</p>
@@ -291,56 +283,56 @@ const end = {
 const fixation = {
   type: jsPsychHtmlKeyboardResponse,
   stimulus: '<div style="font-size:60px;">+</div>',
-  choices: 'NO_KEYS',
+  choices: "NO_KEYS",
   trial_duration: 1000,
   data: {
-    task: 'fixation',
+    task: "fixation",
   },
 };
 
 // play vowels
 const play_vowel_1 = {
   type: jsPsychAudioKeyboardResponse,
-  stimulus: jsPsych.timelineVariable('path1'),
-  choices: 'NO_CHOICE',
+  stimulus: jsPsych.timelineVariable("path1"),
+  choices: "NO_CHOICE",
   trial_ends_after_audio: true,
   data: {
-    task: 'vowel',
+    task: "vowel",
   },
 };
 
 const play_vowel_2 = {
   type: jsPsychAudioKeyboardResponse,
-  stimulus: jsPsych.timelineVariable('path2'),
-  choices: 'NO_CHOICE',
+  stimulus: jsPsych.timelineVariable("path2"),
+  choices: "NO_CHOICE",
   trial_ends_after_audio: true,
   data: {
-    task: 'vowel',
+    task: "vowel",
   },
 };
 
 // pause
 const pause = {
   type: jsPsychHtmlKeyboardResponse,
-  stimulus: '',
-  choices: 'NO_KEYS',
+  stimulus: "",
+  choices: "NO_KEYS",
   trial_duration: 500,
 };
 
 // collect response
 const collect_response = {
   type: jsPsychHtmlKeyboardResponse,
-  stimulus: '',
-  choices: ['f', 'j'],
+  stimulus: "",
+  choices: ["f", "j"],
   data: {
-    task: 'response',
-    vowel_space: jsPsych.timelineVariable('block_vowel_space'),
-    talker1: jsPsych.timelineVariable('talker1'),
-    talker2: jsPsych.timelineVariable('talker2'),
-    vowel1: jsPsych.timelineVariable('vowel1'),
-    vowel2: jsPsych.timelineVariable('vowel2'),
-    same: jsPsych.timelineVariable('same'),
-    correct_response: jsPsych.timelineVariable('key'),
+    task: "response",
+    vowel_space: jsPsych.timelineVariable("block_vowel_space"),
+    talker1: jsPsych.timelineVariable("talker1"),
+    talker2: jsPsych.timelineVariable("talker2"),
+    vowel1: jsPsych.timelineVariable("vowel1"),
+    vowel2: jsPsych.timelineVariable("vowel2"),
+    same: jsPsych.timelineVariable("same"),
+    correct_response: jsPsych.timelineVariable("key"),
   },
   on_finish: function (data) {
     data.correct = jsPsych.pluginAPI.compareKeys(
@@ -382,8 +374,8 @@ function make_loop_node(block_number) {
       // get the data from the previous trial,
       // and check which key was pressed
       var data = jsPsych.data.get().last(1).values()[0];
-      if (jsPsych.pluginAPI.compareKeys(data.response, 'r')) {
-        console.log('repeat training');
+      if (jsPsych.pluginAPI.compareKeys(data.response, "r")) {
+        console.log("repeat training");
         return true;
       } else {
         return false;
@@ -394,7 +386,7 @@ function make_loop_node(block_number) {
 
 //******* push trials to timeline and run experiment
 
-timeline.push(preload)
+timeline.push(preload);
 
 // set up instructions
 timeline.push(welcome);
