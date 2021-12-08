@@ -62,7 +62,11 @@ jsPsych.data.addProperties({
   same_key: keys.same,
 });
 
-//******* define trials
+
+
+
+
+//******* define instructions
 
 // define welcome message
 const welcome = {
@@ -137,6 +141,40 @@ function make_start_block(block_number) {
     post_trial_gap: 2000,
   };
 }
+
+// define break between blocks
+const intermission = {
+  type: jsPsychHtmlKeyboardResponse,
+  stimulus: `
+              <p>This is the end of block ${block_number - 1}.</p>
+              <p>You may now take a break.</p>
+              <p><i>Press any key to start the next block.</i></p>
+    `,
+};
+
+// define debrief
+const end = {
+  type: jsPsychHtmlKeyboardResponse,
+  stimulus: function () {
+    const trials = jsPsych.data.get().filter({ task: "response" });
+    const correct_trials = trials.filter({ correct: true });
+    const accuracy = Math.round(
+      (correct_trials.count() / trials.count()) * 100
+    );
+    const rt = Math.round(correct_trials.select("rt").mean());
+
+    return `<p>This is the end of the experiment.</p>
+            <p>You responded correctly on ${accuracy}% of the trials.</p>
+            <p>Your average response time was ${rt}ms.</p>
+            <p>Press any key to complete the experiment.</p>
+            <p>Thank you for participating!</p>`;
+  },
+};
+
+
+
+
+//******* define experiment objects
 
 // define fixation
 const fixation = {
@@ -238,38 +276,10 @@ function make_loop_node(block_number) {
 };
 
 
-// define break between blocks
-const intermission = {
-  type: jsPsychHtmlKeyboardResponse,
-  stimulus: `
-              <p>This is the end of block ${block_number - 1}.</p>
-              <p>You may now take a break.</p>
-              <p><i>Press any key to start the next block.</i></p>
-    `,
-};
 
-// define debrief
-const end = {
-  type: jsPsychHtmlKeyboardResponse,
-  stimulus: function () {
-    const trials = jsPsych.data.get().filter({ task: "response" });
-    const correct_trials = trials.filter({ correct: true });
-    const accuracy = Math.round(
-      (correct_trials.count() / trials.count()) * 100
-    );
-    const rt = Math.round(correct_trials.select("rt").mean());
 
-    return `<p>This is the end of the experiment.</p>
-            <p>You responded correctly on ${accuracy}% of the trials.</p>
-            <p>Your average response time was ${rt}ms.</p>
-            <p>Press any key to complete the experiment.</p>
-            <p>Thank you for participating!</p>`;
-  },
-};
 
-//******* create timeline and run experiment
-
-// push trials to timeline
+//******* push trials to timeline and run experiment
 timeline.push(preload);
 timeline.push(welcome);
 timeline.push(instructions);
