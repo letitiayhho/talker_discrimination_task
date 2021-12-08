@@ -13,7 +13,6 @@ const jsPsych = initJsPsych({
 // create timeline
 let timeline = [];
 let block_number = 1;
-let training_attempt_number = 1;
 
 // preload images
 const preload = {
@@ -99,42 +98,10 @@ const training_instructions = {
 };
 
 // define post-training instructions
-function guessAttemptNum(internalNodeId) {
-    const loop_id = internalNodeId.split('-')[2];
-    const attempt_num = loop_id.split('.')[1];
-    return parseInt(attempt_num);
-}
-
-function getAttemptNums(data) {
-    const attempt_nums = data.map(el => guessAttemptNum(el.internal_node_id));
-    return attempt_nums;
-}
-
-function guessCurrentAttemptNum(data) {
-    const attempt_nums = getAttemptNums(data);
-    const current_attempt = attempt_nums.reduce(
-        (previous, current) => Math.max(previous, current),
-        0);
-    return current_attempt;
-}
-
-function getCurrentAttemptTrials(data){
-  const current_attempt = guessCurrentAttemptNum(data)
-  return data.filter(function(el) {
-      const attempt_num = guessAttemptNum(el.internal_node_id);
-      return attempt_num === current_attempt;
-  });
-};
-
 const post_training_instructions = {
   type: jsPsychHtmlKeyboardResponse,
   stimulus: function () {
-      console.log("fetching data");
         const trials = jsPsych.data.getLastTimelineData().filter({ task: "training_response" });
-      console.log(trials);
-      const current_attempt = guessCurrentAttemptNum(trials.trials);
-      console.log({current_attempt});
-      const current_attempt_trials = getCurrentAttemptTrials(trials.trials);
         const correct_trials = trials.filter({ correct: true });
         const accuracy = Math.round(
           (correct_trials.count() / trials.count()) * 100
@@ -148,7 +115,6 @@ const post_training_instructions = {
                 <p><i>Press any other key to continue to the experiment blocks.</i></p>
                 `
       },
-    on_finish: function(){ training_attempt_number++; console.log({training_attempt_number}) },
 };
 
 // define start block
@@ -204,14 +170,12 @@ const pause = {
 };
 
 // collect training response
-function make_collect_training_response(training_attempt_number) {
-  return {
+const collect_training_response = {
   type: jsPsychHtmlKeyboardResponse,
   stimulus: "",
   choices: ["f", "j"],
   data: {
     task: "training_response",
-    training_attempt: training_attempt_number,
     vowel_space: jsPsych.timelineVariable("block_vowel_space"),
     talker1: jsPsych.timelineVariable("talker1"),
     talker2: jsPsych.timelineVariable("talker2"),
@@ -226,7 +190,6 @@ function make_collect_training_response(training_attempt_number) {
       data.correct_response
     );
   },
-};
 };
 
 // collect response
@@ -253,20 +216,18 @@ const collect_response = {
 };
 
 // training block
-function make_training_block(training_attempt_number) {
-    return {
+const training_block = {
       timeline: [
         fixation,
         play_vowel_1,
         pause,
         play_vowel_2,
-        make_collect_training_response(training_attempt_number),
+        collect_training_response,
         pause,
       ],
         timeline_variables: stim_order.filter(function(el) {
             return el.group === group && el.block_number === 1 && el.rep < 3
         }),
-};
 };
 
 // all trials
@@ -287,9 +248,8 @@ function make_experiment_block(block_number){
 };
 
 // define conditional node to repeat training
-function make_loop_node(training_attempt_number) {
-    return {
-    timeline: [training_instructions, make_training_block(training_attempt_number), post_training_instructions],
+const loop_node = {
+    timeline: [training_instructions, training_block, post_training_instructions],
     loop_function: function(){
         // get the data from the previous trial,
         // and check which key was pressed
@@ -301,7 +261,6 @@ function make_loop_node(training_attempt_number) {
             return false;
         }
     },
-};
 };
 
 // define break between blocks
@@ -318,8 +277,6 @@ const intermission = {
 const end = {
   type: jsPsychHtmlKeyboardResponse,
   stimulus: function () {
-      const attempt_id = jsPsych.getCurrentTimelineNodeID().split('-')[2];
-      const attempt_number = attempt_id[attempt_id.length - 1];
     const trials = jsPsych.data.get().filter({ task: "response" });
     const correct_trials = trials.filter({ correct: true });
     const accuracy = Math.round(
@@ -341,7 +298,7 @@ const end = {
 timeline.push(preload);
 timeline.push(welcome);
 timeline.push(instructions);
-timeline.push(make_loop_node(training_attempt_number)); // repeat training if 'r' pressed
+timeline.push(loop_node); // repeat training if 'r' pressed
 block_number++;
 timeline.push(make_start_block(block_number))
 timeline.push(make_experiment_block(block_number)); // block 1
