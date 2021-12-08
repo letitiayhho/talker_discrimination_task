@@ -98,25 +98,56 @@ const training_instructions = {
     post_trial_gap: 2000,
 };
 
+// define post-training instructions
+function guessAttemptNum(internalNodeId) {
+    const loop_id = internalNodeId.split('-')[2];
+    const attempt_num = loop_id.split('.')[1];
+    return parseInt(attempt_num);
+}
+
+function getAttemptNums(data) {
+    const attempt_nums = data.map(el => guessAttemptNum(el.internal_node_id));
+    return attempt_nums;
+}
+
+function guessCurrentAttemptNum(data) {
+    const attempt_nums = getAttemptNums(data);
+    const current_attempt = attempt_nums.reduce(
+        (previous, current) => Math.max(previous, current),
+        0);
+    return current_attempt;
+}
+
+function getCurrentAttemptTrials(data){
+  const current_attempt = guessCurrentAttemptNum(data)
+  return data.filter(function(el) {
+      const attempt_num = guessAttemptNum(el.internal_node_id);
+      return attempt_num === current_attempt;
+  });
+};
+
 const post_training_instructions = {
   type: jsPsychHtmlKeyboardResponse,
   stimulus: function () {
       console.log("fetching data");
-      console.log({training_attempt_number});
-    const trials = jsPsych.data.getLastTimelineData().filter({ task: "training_response" }).filter({ training_attempt: training_attempt_number});
-    const correct_trials = trials.filter({ correct: true });
-    const accuracy = Math.round(
-      (correct_trials.count() / trials.count()) * 100
-    );
-    const rt = Math.round(correct_trials.select("rt").mean());
+        const trials = jsPsych.data.getLastTimelineData().filter({ task: "training_response" });
+      console.log(trials);
+      const current_attempt = guessCurrentAttemptNum(trials.trials);
+      console.log({current_attempt});
+      const current_attempt_trials = getCurrentAttemptTrials(trials.trials);
+        const correct_trials = trials.filter({ correct: true });
+        const accuracy = Math.round(
+          (correct_trials.count() / trials.count()) * 100
+        );
+        const rt = Math.round(correct_trials.select("rt").mean());
 
-    return `
-            <p>This is the end of the training block.</p>
-            <p>You responded correctly on ${accuracy}% of the trials.</p>
-            <p><i>Press the 'r' key if you would like to repeat the training block.</i></p>
-            <p><i>Press any other key to continue to the experiment blocks.</i></p>
-            `
-  },
+        return `
+                <p>This is the end of the training block.</p>
+                <p>You responded correctly on ${accuracy}% of the trials.</p>
+                <p><i>Press the 'r' key if you would like to repeat the training block.</i></p>
+                <p><i>Press any other key to continue to the experiment blocks.</i></p>
+                `
+      },
     on_finish: function(){ training_attempt_number++; console.log({training_attempt_number}) },
 };
 
@@ -233,10 +264,10 @@ function make_training_block(training_attempt_number) {
         pause,
       ],
         timeline_variables: stim_order.filter(function(el) {
-            return el.group === group && el.block_number === 1
+            return el.group === group && el.block_number === 1 && el.rep < 3
         }),
 };
-}
+};
 
 // all trials
 function make_experiment_block(block_number){
@@ -256,8 +287,9 @@ function make_experiment_block(block_number){
 };
 
 // define conditional node to repeat training
-var loop_node = {
-    timeline: [training_instructions, /*make_training_block(training_attempt_number),*/ post_training_instructions],
+function make_loop_node(training_attempt_number) {
+    return {
+    timeline: [training_instructions, make_training_block(training_attempt_number), post_training_instructions],
     loop_function: function(){
         // get the data from the previous trial,
         // and check which key was pressed
@@ -269,6 +301,7 @@ var loop_node = {
             return false;
         }
     },
+};
 };
 
 // define break between blocks
@@ -285,6 +318,8 @@ const intermission = {
 const end = {
   type: jsPsychHtmlKeyboardResponse,
   stimulus: function () {
+      const attempt_id = jsPsych.getCurrentTimelineNodeID().split('-')[2];
+      const attempt_number = attempt_id[attempt_id.length - 1];
     const trials = jsPsych.data.get().filter({ task: "response" });
     const correct_trials = trials.filter({ correct: true });
     const accuracy = Math.round(
@@ -306,10 +341,7 @@ const end = {
 timeline.push(preload);
 timeline.push(welcome);
 timeline.push(instructions);
-//timeline.push(training_instructions);
-//timeline.push(make_training_block(training_attempt_number)); // training block
-//timeline.push(post_training_instructions);
-timeline.push(loop_node); // repeat training if 'r' pressed
+timeline.push(make_loop_node(training_attempt_number)); // repeat training if 'r' pressed
 block_number++;
 timeline.push(make_start_block(block_number))
 timeline.push(make_experiment_block(block_number)); // block 1
