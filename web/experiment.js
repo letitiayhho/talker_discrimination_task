@@ -267,16 +267,18 @@ function make_start_block(block_number) {
                 `,
     post_trial_gap: 2000,
   };
-}
+};
 
 // define break between blocks
-const intermission = {
+function make_intermission(block_number) {
+    return {
   type: jsPsychHtmlKeyboardResponse,
   stimulus: `
-              <p>This is the end of block ${block_number}.</p>
+              <p>This is the end of block ${block_number - 1}.</p>
               <p>You may now take a break.</p>
-              <p><i>Press any key to start the next block.</i></p>
+              <p><i>Press any key to continue.</i></p>
     `,
+};
 };
 
 // define debrief
@@ -425,17 +427,17 @@ block_number++;
 console.log({ block_number });
 timeline.push(make_start_block(block_number));
 timeline.push(make_block(block_number)); // block 1
-timeline.push(intermission);
+timeline.push(make_intermission(block_number));
 block_number++;
 console.log({ block_number });
 timeline.push(make_start_block(block_number));
 timeline.push(make_block(block_number)); // block 2
-timeline.push(intermission);
+timeline.push(make_intermission(block_number));
 block_number++;
 console.log({ block_number });
 timeline.push(make_start_block(block_number));
 timeline.push(make_block(block_number)); // block 3
-timeline.push(intermission);
+timeline.push(make_intermission(block_number));
 block_number++;
 console.log({ block_number });
 timeline.push(make_start_block(block_number));
