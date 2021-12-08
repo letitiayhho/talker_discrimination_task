@@ -39,26 +39,28 @@ console.log(group);
 
 // identify the key for same talker responses
 function getKeys() {
-    const keys = ['f', 'j'];
-    const same_key = (stim_order.filter(stim_order => stim_order.group === group && stim_order.same === 1))[1].key
-    const index = keys.indexOf(same_key);
-    keys.splice(index, 1);
-    const different_key = keys[0];
-    return {
-        same: same_key,
-        different: different_key
-    };
+  const keys = ["f", "j"];
+  const same_key = stim_order.filter(
+    (stim_order) => stim_order.group === group && stim_order.same === 1
+  )[1].key;
+  const index = keys.indexOf(same_key);
+  keys.splice(index, 1);
+  const different_key = keys[0];
+  return {
+    same: same_key,
+    different: different_key,
+  };
 }
 
 const keys = getKeys();
-console.log(keys.same)
-console.log(keys.different)
+console.log(keys.same);
+console.log(keys.different);
 
 // add subjectid to every trial
 jsPsych.data.addProperties({
   subject: subjectid,
-    group: group,
-    same_key: keys.same,
+  group: group,
+  same_key: keys.same,
 });
 
 //******* define trials
@@ -88,47 +90,53 @@ const instructions = {
 
 // define training instructions
 const training_instructions = {
-    type: jsPsychHtmlKeyboardResponse,
-    stimulus: `
+  type: jsPsychHtmlKeyboardResponse,
+  stimulus: `
             <p>This is the training block.</p>
             <p>The training block contains a small number of training trials to help<br>familiarize you with the experiment.</p>
             <p>In this block you will receive feedback for each of your answers.</p>
             <p><i>Press any key to begin.</i></p>
             `,
-    post_trial_gap: 2000,
+  post_trial_gap: 2000,
 };
 
 // define post-training instructions
 const post_training_instructions = {
   type: jsPsychHtmlKeyboardResponse,
   stimulus: function () {
-        const trials = jsPsych.data.getLastTimelineData().filter({ task: "training_response" });
-        const correct_trials = trials.filter({ correct: true });
-        const accuracy = Math.round(
-          (correct_trials.count() / trials.count()) * 100
-        );
-        const rt = Math.round(correct_trials.select("rt").mean());
+    const trials = jsPsych.data
+      .getLastTimelineData()
+      .filter({ task: "training_response" });
+    const correct_trials = trials.filter({ correct: true });
+    const accuracy = Math.round(
+      (correct_trials.count() / trials.count()) * 100
+    );
+    const rt = Math.round(correct_trials.select("rt").mean());
 
-        return `
+    return `
                 <p>This is the end of the training block.</p>
                 <p>You responded correctly on ${accuracy}% of the trials.</p>
                 <p><i>Press the 'r' key if you would like to repeat the training block.</i></p>
                 <p><i>Press any other key to continue to the experiment blocks.</i></p>
-                `
-      },
+                `;
+  },
 };
 
 // define start block
 function make_start_block(block_number) {
-    return {
-        type: jsPsychHtmlKeyboardResponse,
-        stimulus: `
-                <p>This is experiment block ${block_number-1}/4.</p>
-                <p>Again, press the '${keys.same}' if you think the vowels were spoken by the same person<br>and the '${keys.different}' if you think they were spoken by different people.</p>
+  return {
+    type: jsPsychHtmlKeyboardResponse,
+    stimulus: `
+                <p>This is experiment block ${block_number - 1}/4.</p>
+                <p>Again, press the '${
+                  keys.same
+                }' if you think the vowels were spoken by the same person<br>and the '${
+      keys.different
+    }' if you think they were spoken by different people.</p>
                 <p><i>Press any key to begin.</i></p>
                 `,
-        post_trial_gap: 2000,
-    };
+    post_trial_gap: 2000,
+  };
 }
 
 // define fixation
@@ -219,57 +227,57 @@ const collect_response = {
 
 // training block
 const training_block = {
-      timeline: [
-        fixation,
-        play_vowel_1,
-        pause,
-        play_vowel_2,
-        collect_training_response,
-        pause,
-      ],
-        timeline_variables: stim_order.filter(function(el) {
-            return el.group === group && el.block_number === 1 && el.rep < 3
-        }),
+  timeline: [
+    fixation,
+    play_vowel_1,
+    pause,
+    play_vowel_2,
+    collect_training_response,
+    pause,
+  ],
+  timeline_variables: stim_order.filter(function (el) {
+    return el.group === group && el.block_number === 1 && el.rep < 3;
+  }),
 };
 
 // all trials
-function make_experiment_block(block_number){
-    return {
-      timeline: [
-        fixation,
-        play_vowel_1,
-        pause,
-        play_vowel_2,
-        collect_response,
-        pause,
-      ],
-        timeline_variables: stim_order.filter(function(el) {
-            return el.group === group && el.block_number === block_number
-        }),
-    }
-};
+function make_experiment_block(block_number) {
+  return {
+    timeline: [
+      fixation,
+      play_vowel_1,
+      pause,
+      play_vowel_2,
+      collect_response,
+      pause,
+    ],
+    timeline_variables: stim_order.filter(function (el) {
+      return el.group === group && el.block_number === block_number;
+    }),
+  };
+}
 
 // define conditional node to repeat training
 const loop_node = {
-    timeline: [training_instructions, training_block, post_training_instructions],
-    loop_function: function(){
-        // get the data from the previous trial,
-        // and check which key was pressed
-        var data = jsPsych.data.get().last(1).values()[0];
-        if(jsPsych.pluginAPI.compareKeys(data.response, 'r')){
-            console.log("pressed 'r'");
-            return true;
-        } else {
-            return false;
-        }
-    },
+  timeline: [training_instructions, training_block, post_training_instructions],
+  loop_function: function () {
+    // get the data from the previous trial,
+    // and check which key was pressed
+    var data = jsPsych.data.get().last(1).values()[0];
+    if (jsPsych.pluginAPI.compareKeys(data.response, "r")) {
+      console.log("pressed 'r'");
+      return true;
+    } else {
+      return false;
+    }
+  },
 };
 
 // define break between blocks
 const intermission = {
   type: jsPsychHtmlKeyboardResponse,
   stimulus: `
-              <p>This is the end of block ${block_number-1}.</p>
+              <p>This is the end of block ${block_number - 1}.</p>
               <p>You may now take a break.</p>
               <p><i>Press any key to start the next block.</i></p>
     `,
@@ -302,19 +310,19 @@ timeline.push(welcome);
 timeline.push(instructions);
 timeline.push(loop_node); // repeat training if 'r' pressed
 block_number++;
-timeline.push(make_start_block(block_number))
+timeline.push(make_start_block(block_number));
 timeline.push(make_experiment_block(block_number)); // block 1
 timeline.push(intermission);
 block_number++;
-timeline.push(make_start_block(block_number))
+timeline.push(make_start_block(block_number));
 timeline.push(make_experiment_block(block_number)); // block 2
 timeline.push(intermission);
 block_number++;
-timeline.push(make_start_block(block_number))
+timeline.push(make_start_block(block_number));
 timeline.push(make_experiment_block(block_number)); // block 3
 timeline.push(intermission);
 block_number++;
-timeline.push(make_start_block(block_number))
+timeline.push(make_start_block(block_number));
 timeline.push(make_experiment_block(block_number)); // block 4
 timeline.push(end);
 
