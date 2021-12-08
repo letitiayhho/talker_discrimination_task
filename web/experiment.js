@@ -78,9 +78,10 @@ const instructions = {
   stimulus: `
             <p>In this experiment you will hear pairs of vowels.</p>
             <p>Your job is to determine whether the vowels were spoken by the same person.</p>
-            <p>After you hear each vowel pair, press the '${keys.same}' key if you think the vowels were spoken by the same person.</p>
-            <p>Conversely, press the '${keys.different}' if you think the vowels were spoken by different people</p>
-            <p>Try to respond as accurately as you can, you will receive your overall score at the end of the experiment.</p>
+            <p>A '+' sign will appear before each vowel pair is played.</p>
+            <p>After you hear each vowel pair, press the '${keys.same}' key if you think the vowels were spoken by<br>the same person and the '${keys.different}' if you think the vowels were spoken by different people.</p>
+            <p>Try to respond as accurately as you can, you will receive your<br>overall score at the end of the experiment.</p>
+            <p>This experiment will take approximately 20-25 minutes,<br>you make take breaks in between blocks if you wish.</p>
             <p><i>Press any key to continue.</i></p>
 `,
 };
@@ -90,7 +91,7 @@ const training_instructions = {
     type: jsPsychHtmlKeyboardResponse,
     stimulus: `
             <p>This is the training block.</p>
-            <p>The training block contains a small number of training trials to help familiarize you with the experiment.</p>
+            <p>The training block contains a small number of training trials to help<br>familiarize you with the experiment.</p>
             <p>In this block you will receive feedback for each of your answers.</p>
             <p><i>Press any key to begin.</i></p>
             `,
@@ -123,6 +124,7 @@ function make_start_block(block_number) {
         type: jsPsychHtmlKeyboardResponse,
         stimulus: `
                 <p>This is experiment block ${block_number-1}/4.</p>
+                <p>Again, press the '${keys.same}' if you think the vowels were spoken by the same person<br>and the '${keys.different}' if you think they were spoken by different people.</p>
                 <p><i>Press any key to begin.</i></p>
                 `,
         post_trial_gap: 2000,
