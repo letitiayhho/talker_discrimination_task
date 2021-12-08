@@ -22,8 +22,9 @@ const preload = {
 
 // select subject ID
 const subjectid = jsPsych.randomization.randomID(15);
-console.log(subjectid);
+console.log({subjectid});
 
+// set first digit in subjectid as group number
 function computeBucket(s) {
   let sum = 0;
   for (i = 0; i < s.length; ++i) {
@@ -33,9 +34,8 @@ function computeBucket(s) {
   return bucket;
 }
 
-// set first digit in subjectid as group number
 const group = computeBucket(subjectid);
-console.log(group);
+console.log({group});
 
 // identify the key for same talker responses
 function getKeys() {
@@ -53,8 +53,7 @@ function getKeys() {
 }
 
 const keys = getKeys();
-console.log(keys.same);
-console.log(keys.different);
+console.log({keys});
 
 // add subjectid to every trial
 jsPsych.data.addProperties({
@@ -229,7 +228,7 @@ function make_loop_node(block_number) {
     // and check which key was pressed
     var data = jsPsych.data.get().last(1).values()[0];
     if (jsPsych.pluginAPI.compareKeys(data.response, "r")) {
-      console.log("pressed 'r'");
+      console.log("repeat training");
       return true;
     } else {
       return false;
@@ -276,18 +275,22 @@ timeline.push(welcome);
 timeline.push(instructions);
 timeline.push(make_loop_node(block_number)); // repeat training if 'r' pressed
 block_number++;
+console.log({block_number});
 timeline.push(make_start_block(block_number));
 timeline.push(make_block(block_number)); // block 1
 timeline.push(intermission);
 block_number++;
+console.log({block_number});
 timeline.push(make_start_block(block_number));
 timeline.push(make_block(block_number)); // block 2
 timeline.push(intermission);
 block_number++;
+console.log({block_number});
 timeline.push(make_start_block(block_number));
 timeline.push(make_block(block_number)); // block 3
 timeline.push(intermission);
 block_number++;
+console.log({block_number});
 timeline.push(make_start_block(block_number));
 timeline.push(make_block(block_number)); // block 4
 timeline.push(end);
