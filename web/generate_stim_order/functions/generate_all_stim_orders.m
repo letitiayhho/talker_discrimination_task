@@ -11,7 +11,7 @@ function generate_all_stim_orders()
     
     % Write to JSON
     encodedjson = jsonencode(all_stim_orders);
-    filename = fullfile('web', 'stim_order.js');    
+    filename = fullfile('web', 'stim', 'stim_order.js');    
     fid = fopen(filename, 'w');
     fprintf(fid, "const stim_order = ")
     fprintf(fid, encodedjson); 
