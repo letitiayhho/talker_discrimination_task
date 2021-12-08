@@ -14,6 +14,17 @@ const jsPsych = initJsPsych({
 let timeline = [];
 let block_number = 1;
 
+// init connection with pavlovia.org
+const pavlovia_init = {
+	type: "pavlovia",
+	command: "init"
+};
+
+const pavlovia_finish = {
+	type: "pavlovia",
+	command: "finish"
+	};
+
 // preload images
 const preload = {
   type: jsPsychPreload,
@@ -189,7 +200,7 @@ const repeat = {
     },
   ],
   loop_function: function (data) {
-    if (data.values()[0].response == 0) {
+    if (data.values()[0].response === 0) {
       return true;
     } else {
       return false;
@@ -267,7 +278,7 @@ function make_start_block(block_number) {
                 `,
     post_trial_gap: 2000,
   };
-};
+}
 
 // define break between blocks
 function make_intermission(block_number) {
@@ -279,7 +290,7 @@ function make_intermission(block_number) {
               <p><i>Press any key to continue.</i></p>
     `,
 };
-};
+}
 
 // define debrief
 const end = {
@@ -410,6 +421,7 @@ function make_loop_node(block_number) {
 //******* push trials to timeline and run experiment
 
 timeline.push(preload);
+timeline.push(pavlovia_init);
 
 // set up instructions
 timeline.push(welcome);
@@ -443,6 +455,7 @@ console.log({ block_number });
 timeline.push(make_start_block(block_number));
 timeline.push(make_block(block_number)); // block 4
 timeline.push(end);
+timeline.push(pavlovia_finish);
 
 // run the experiment
 jsPsych.run(timeline);
