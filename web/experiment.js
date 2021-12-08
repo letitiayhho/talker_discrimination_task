@@ -64,26 +64,44 @@ jsPsych.data.addProperties({
 
 //******* define set up instructions
 
-// define welcome message
+// define welcome message and display consent form
 const welcome = {
-  type: jsPsychHtmlKeyboardResponse,
-  stimulus: `
-                <p>Welcome to the experiment.</p>
-                <p><i>Press any key to begin.</i></p>
-                `,
+    type: jsPsychInstructions,
+    pages: [ `
+        <p>Welcome to the experiment.</p>
+        `,`
+        <p>On the next page, you will see the <b>consent form</b>.
+        <br>Please read this document carefully before agreeing to participate in the study.</p>
+        `,`
+        <p>Please read this consent form. You may download this form if you wish.</p>
+        <p>When you are ready to continue, scroll to the bottom of the page and click "Next".</p><embed src="consent_form.pdf" width="800px" height="2100px" />
+        `],
+    show_clickable_nav: true,
+    allow_backward: true,
+};
+
+const consentform = {
+    type: jsPsychHtmlButtonResponse,
+    stimulus: 'I agree to take part in this experiment.',
+    choices: ['Yes', 'No'],
+    on_finish: function(data) {
+        if (data.button_pressed == 1) {
+                jsPsych.endExperiment('You chose not to take part in this experiment. Thank you for your time.');
+      }
+    }
 };
 
 const quiet_instructions = {
-  type: jsPsychHtmlKeyboardResponse,
-  stimulus: `
+  type: jsPsychInstructions,
+  pages: [`
         <p>Thank you for participating in our study.
         <br>This study involves several auditory tasks followed by a survey.
         <p>It is very important to us that you complete this study appropriately.</p>
         <p>Please complete this study in a quiet place with minimal distractions.
         <br>Please turn off any cell phone or laptop notifications. </p>
         <p>Please try to use headphones/earphones when completing this study.</p>
-        <p><i>Press any key to continue.</i><p>
-      `,
+      `],
+    show_clickable_nav: true,
 };
 
 const quiet1 = {
@@ -101,6 +119,7 @@ const quiet1 = {
       required: true,
     },
   ],
+        button_label: 'Next',
 };
 
 const not_quiet = {
@@ -124,12 +143,13 @@ const not_quiet = {
       required: true,
     },
   ],
+    button_label: 'Next',
 };
 
-var quiet_node = {
+const quiet_node = {
   timeline: [not_quiet],
   conditional_function: function () {
-    var data = jsPsych.data.getLastTrialData().values()[0];
+    const data = jsPsych.data.getLastTrialData().values()[0];
     if (data.response.Q0 === "I am NOT in a quiet place") {
       return true;
     } else {
@@ -138,7 +158,7 @@ var quiet_node = {
   },
 };
 
-var quiet2 = {
+const quiet2 = {
   type: jsPsychSurveyMultiChoice,
   questions: [
     {
@@ -152,9 +172,10 @@ var quiet2 = {
       required: true,
     },
   ],
+        button_label: 'Next',
 };
 
-var repeat = {
+const repeat = {
   timeline: [
     {
       type: jsPsychAudioButtonResponse,
@@ -168,7 +189,7 @@ var repeat = {
     },
   ],
   loop_function: function (data) {
-    if (data.values()[0].button_pressed == 0) {
+    if (data.values()[0].response == 0) {
       return true;
     } else {
       return false;
@@ -252,7 +273,7 @@ function make_start_block(block_number) {
 const intermission = {
   type: jsPsychHtmlKeyboardResponse,
   stimulus: `
-              <p>This is the end of block ${block_number - 1}.</p>
+              <p>This is the end of block ${block_number}.</p>
               <p>You may now take a break.</p>
               <p><i>Press any key to start the next block.</i></p>
     `,
@@ -390,6 +411,7 @@ timeline.push(preload);
 
 // set up instructions
 timeline.push(welcome);
+timeline.push(consentform);
 timeline.push(quiet_instructions);
 timeline.push(quiet1);
 timeline.push(quiet_node);
